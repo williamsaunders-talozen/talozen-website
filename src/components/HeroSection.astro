@@ -129,6 +129,7 @@ const applicants: { name: string; photo: string; credit: 'button' | 'processing'
             </ul>
           </div>
         </div>
+        <div class="hero-preview__fade"></div>
       </div>
       </div>
     </div>
@@ -366,6 +367,17 @@ const applicants: { name: string; photo: string; credit: 'button' | 'processing'
     flex-direction: column;
     min-height: 0;
     overflow: auto;
+  }
+
+  .hero-preview__fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, rgb(245, 243, 240));
+    pointer-events: none;
+    z-index: 2;
   }
 
   .hero-preview__wf-header-text {
@@ -793,7 +805,7 @@ const applicants: { name: string; photo: string; credit: 'button' | 'processing'
   }
 
   /* Drop pay pill when the row is too narrow so FICA + credit status stay visible */
-  @container (max-width: 360px) {
+  @container (max-width: 500px) {
     .hero-preview__wf-card {
       grid-template-columns: 24px 1fr 12% 1fr;
       column-gap: 6px;
