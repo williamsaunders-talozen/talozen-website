@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warm Accent Colour Options — Talozen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #FAFAFF;
+      color: #1E1E1E;
+      padding: 48px 24px;
+    }
+    .container { max-width: 1080px; margin: 0 auto; }
+    h1 { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 8px; }
+    .subtitle { text-align: center; color: #757575; font-size: 1rem; margin-bottom: 48px; }
+    .brand-ref { text-align: center; margin-bottom: 40px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .brand-swatch { width: 32px; height: 32px; border-radius: 8px; background: #101066; }
+    .brand-label { font-size: 0.875rem; color: #757575; }
+
+    .options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+
+    .option {
+      border-radius: 16px;
+      overflow: hidden;
+      background: white;
+      box-shadow: 0 2px 16px rgba(16,16,102,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .option:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(16,16,102,0.12); }
+
+    .option__header { padding: 32px 24px; color: white; text-align: center; }
+    .option__header h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 4px; }
+    .option__header p { font-size: 0.8rem; opacity: 0.85; }
+    .option__hex { font-size: 0.75rem; font-family: monospace; opacity: 0.7; margin-top: 8px; }
+
+    .option__body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+    .palette { display: flex; gap: 8px; }
+    .palette__swatch { flex: 1; height: 40px; border-radius: 8px; }
+
+    .sample-card {
+      border: 1px solid #E2E2EC;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .sample-icon {
+      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sample-card h3 { font-size: 0.875rem; font-weight: 600; margin-bottom: 2px; }
+    .sample-card p { font-size: 0.75rem; color: #757575; line-height: 1.4; }
+
+    .sample-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px 20px; border-radius: 8px; font-weight: 600;
+      font-size: 0.875rem; color: white; border: none; cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+    .sample-btn:hover { opacity: 0.9; }
+
+    .sample-badge {
+      display: inline-flex; padding: 4px 10px; border-radius: 20px;
+      font-size: 0.7rem; font-weight: 600;
+    }
+
+    .sample-stat { text-align: center; }
+    .sample-stat__value { font-size: 2rem; font-weight: 700; line-height: 1; }
+    .sample-stat__label { font-size: 0.75rem; color: #757575; margin-top: 4px; }
+
+    .sample-nav { display: flex; gap: 24px; padding: 12px 0; border-bottom: 2px solid #ECECF4; }
+    .sample-nav__item { font-size: 0.85rem; font-weight: 500; color: #757575; position: relative; padding-bottom: 10px; cursor: default; }
+    .sample-nav__item--active { font-weight: 600; }
+    .sample-nav__item--active::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 10%; right: 10%;
+      height: 2px; border-radius: 1px;
+    }
+
+    .section-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #757575; margin-bottom: 4px; }
+
+    /* Option 1 — Burnt Sienna (earthy warm red-orange) */
+    .option--sienna .option__header { background: linear-gradient(135deg, #101066 0%, #0D0D55 50%, #A0522D 100%); }
+    .option--sienna .sample-btn { background: #A0522D; }
+    .option--sienna .sample-badge { background: #F5E6DC; color: #6B3518; }
+    .option--sienna .sample-stat__value { color: #A0522D; }
+    .option--sienna .sample-icon { background: #F5E6DC; }
+    .option--sienna .sample-icon svg { color: #884423; }
+    .option--sienna .sample-nav__item--active { color: #A0522D; }
+    .option--sienna .sample-nav__item--active::after { background: #A0522D; }
+
+    /* Option 2 — Warm Tangerine (brighter, friendlier orange) */
+    .option--tangerine .option__header { background: linear-gradient(135deg, #101066 0%, #0D0D55 50%, #E07C3A 100%); }
+    .option--tangerine .sample-btn { background: #E07C3A; }
+    .option--tangerine .sample-badge { background: #FDE9D8; color: #8A4410; }
+    .option--tangerine .sample-stat__value { color: #E07C3A; }
+    .option--tangerine .sample-icon { background: #FDE9D8; }
+    .option--tangerine .sample-icon svg { color: #C46A2B; }
+    .option--tangerine .sample-nav__item--active { color: #E07C3A; }
+    .option--tangerine .sample-nav__item--active::after { background: #E07C3A; }
+
+    /* Option 3 — Crimson Rose (refined warm red) */
+    .option--crimson .option__header { background: linear-gradient(135deg, #101066 0%, #0D0D55 50%, #C0392B 100%); }
+    .option--crimson .sample-btn { background: #C0392B; }
+    .option--crimson .sample-badge { background: #FCE4E1; color: #7A1F15; }
+    .option--crimson .sample-stat__value { color: #C0392B; }
+    .option--crimson .sample-icon { background: #FCE4E1; }
+    .option--crimson .sample-icon svg { color: #A03020; }
+    .option--crimson .sample-nav__item--active { color: #C0392B; }
+    .option--crimson .sample-nav__item--active::after { background: #C0392B; }
+
+    @media (max-width: 767px) {
+      .options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Warm Accent Colour Options</h1>
+    <p class="subtitle">Orange &amp; red range — each shown alongside the Talozen brand indigo (#101066)</p>
+    <div class="brand-ref">
+      <div class="brand-swatch"></div>
+      <span class="brand-label">Current brand: #101066</span>
+    </div>
+
+    <div class="options">
+
+      <!-- Option 1: Burnt Sienna -->
+      <div class="option option--sienna">
+        <div class="option__header">
+          <h2>Burnt Sienna</h2>
+          <p>Earthy · Refined · Grounded</p>
+          <div class="option__hex">#A0522D</div>
+        </div>
+        <div class="option__body">
+          <div>
+            <div class="section-label">Palette</div>
+            <div class="palette">
+              <div class="palette__swatch" style="background:#101066;"></div>
+              <div class="palette__swatch" style="background:#A0522D;"></div>
+              <div class="palette__swatch" style="background:#C8785A;"></div>
+              <div class="palette__swatch" style="background:#F5E6DC;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Button</div>
+            <button class="sample-btn">Start free</button>
+          </div>
+          <div>
+            <div class="section-label">Badge</div>
+            <span class="sample-badge">Most popular</span>
+          </div>
+          <div>
+            <div class="section-label">Nav underline</div>
+            <div class="sample-nav">
+              <span class="sample-nav__item sample-nav__item--active">Calculator</span>
+              <span class="sample-nav__item">Pricing</span>
+              <span class="sample-nav__item">Demo</span>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Stat highlight</div>
+            <div class="sample-stat">
+              <div class="sample-stat__value">5,200</div>
+              <div class="sample-stat__label">hours saved per year</div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Card accent</div>
+            <div class="sample-card">
+              <div class="sample-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <div>
+                <h3>95% Sales Focus</h3>
+                <p>Agents focus on closing deals instead of admin.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option 2: Warm Tangerine -->
+      <div class="option option--tangerine">
+        <div class="option__header">
+          <h2>Warm Tangerine</h2>
+          <p>Energetic · Friendly · Optimistic</p>
+          <div class="option__hex">#E07C3A</div>
+        </div>
+        <div class="option__body">
+          <div>
+            <div class="section-label">Palette</div>
+            <div class="palette">
+              <div class="palette__swatch" style="background:#101066;"></div>
+              <div class="palette__swatch" style="background:#E07C3A;"></div>
+              <div class="palette__swatch" style="background:#F0A46E;"></div>
+              <div class="palette__swatch" style="background:#FDE9D8;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Button</div>
+            <button class="sample-btn">Start free</button>
+          </div>
+          <div>
+            <div class="section-label">Badge</div>
+            <span class="sample-badge">Most popular</span>
+          </div>
+          <div>
+            <div class="section-label">Nav underline</div>
+            <div class="sample-nav">
+              <span class="sample-nav__item sample-nav__item--active">Calculator</span>
+              <span class="sample-nav__item">Pricing</span>
+              <span class="sample-nav__item">Demo</span>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Stat highlight</div>
+            <div class="sample-stat">
+              <div class="sample-stat__value">5,200</div>
+              <div class="sample-stat__label">hours saved per year</div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Card accent</div>
+            <div class="sample-card">
+              <div class="sample-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <div>
+                <h3>95% Sales Focus</h3>
+                <p>Agents focus on closing deals instead of admin.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Option 3: Crimson Rose -->
+      <div class="option option--crimson">
+        <div class="option__header">
+          <h2>Crimson Rose</h2>
+          <p>Bold · Confident · Premium</p>
+          <div class="option__hex">#C0392B</div>
+        </div>
+        <div class="option__body">
+          <div>
+            <div class="section-label">Palette</div>
+            <div class="palette">
+              <div class="palette__swatch" style="background:#101066;"></div>
+              <div class="palette__swatch" style="background:#C0392B;"></div>
+              <div class="palette__swatch" style="background:#D96A5E;"></div>
+              <div class="palette__swatch" style="background:#FCE4E1;"></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Button</div>
+            <button class="sample-btn">Start free</button>
+          </div>
+          <div>
+            <div class="section-label">Badge</div>
+            <span class="sample-badge">Most popular</span>
+          </div>
+          <div>
+            <div class="section-label">Nav underline</div>
+            <div class="sample-nav">
+              <span class="sample-nav__item sample-nav__item--active">Calculator</span>
+              <span class="sample-nav__item">Pricing</span>
+              <span class="sample-nav__item">Demo</span>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Stat highlight</div>
+            <div class="sample-stat">
+              <div class="sample-stat__value">5,200</div>
+              <div class="sample-stat__label">hours saved per year</div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Card accent</div>
+            <div class="sample-card">
+              <div class="sample-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <div>
+                <h3>95% Sales Focus</h3>
+                <p>Agents focus on closing deals instead of admin.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

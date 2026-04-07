@@ -1,0 +1,164 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Talozen — Save time by automating paperwork and compliance",
+  description = "Built specifically for Real Estate agencies in South Africa. Talozen lets you grow your Rentals and Sales book without the admin headaches.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="stylesheet" href="/talozen-tokens.css" />
+    <link rel="preload" href="/assets/talozen-demo.png" as="image" />
+  </head>
+  <body>
+    <slot />
+    <script>
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal--visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      );
+      document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+    </script>
+
+    <script>
+      console.log(
+        '%c✦ Talozen %c— Automate the admin. Grow the book.',
+        'color: #101066; font-size: 16px; font-weight: bold;',
+        'color: #757575; font-size: 14px;'
+      );
+      console.log(
+        '%cBuilding the future of real estate operations in South Africa.\nhttps://talozen.com/careers',
+        'color: #2727FF; font-size: 12px;'
+      );
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg-default);
+    color: var(--text-default);
+    font-family: var(--font-sans);
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  :root {
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .tz-btn {
+    transition: background 0.15s ease, box-shadow 0.2s var(--ease-out-quart), transform 0.1s ease;
+  }
+
+  .tz-btn--primary:hover {
+    box-shadow: 0 4px 20px rgba(16, 16, 102, 0.35);
+  }
+
+  .tz-btn:active {
+    transform: scale(0.97);
+  }
+
+  [id] {
+    scroll-margin-top: 80px;
+  }
+
+  /*
+   * Skip layout/paint work for below-the-fold sections until needed.
+   * This improves initial render cost on long marketing pages.
+   */
+  .defer-section {
+    content-visibility: auto;
+    contain-intrinsic-size: 1000px;
+  }
+
+  .tz-textured {
+    position: relative;
+  }
+
+  .tz-textured::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--border-default) 0.75px, transparent 0.75px);
+    background-size: 24px 24px;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  .reveal--visible {
+    animation: fade-up 0.7s var(--ease-out-quart) forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>

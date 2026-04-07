@@ -1,0 +1,81 @@
+---
+interface Props {
+  headline: string;
+  subheadline?: string;
+  embedUrl: string;
+  embedTitle: string;
+  aspectRatio?: string;
+}
+
+const { headline, subheadline, embedUrl, embedTitle, aspectRatio = "54.9479" } = Astro.props;
+const paddingBottom = `calc(${aspectRatio}% + 41px)`;
+---
+
+<section class="demo">
+  <div class="tz-container">
+    <h2 class="demo__heading reveal">{headline}</h2>
+    {subheadline && <p class="demo__subheading reveal">{subheadline}</p>}
+    <div class="demo__embed-wrapper reveal">
+      <div class="demo__embed" style={`padding-bottom: ${paddingBottom}`}>
+        <iframe
+          src={embedUrl}
+          title={embedTitle}
+          frameborder="0"
+          loading="lazy"
+          allowfullscreen
+          allow="clipboard-write"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .demo {
+    background-color: var(--bg-secondary);
+    padding-block: clamp(var(--space-1200), 8vw, var(--space-2400));
+  }
+
+  .demo__heading {
+    font-family: var(--font-sans);
+    font-size: var(--size-07);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    text-align: center;
+    margin: 0 0 var(--space-300);
+  }
+
+  .demo__subheading {
+    font-family: var(--font-sans);
+    font-size: var(--size-05);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--text-secondary);
+    text-align: center;
+    margin: 0 auto var(--space-1200);
+    max-width: 50ch;
+  }
+
+  .demo__embed-wrapper {
+    background-color: var(--bg-tertiary);
+    border-radius: var(--radius-400);
+    overflow: hidden;
+  }
+
+  .demo__embed {
+    position: relative;
+    height: 0;
+    width: 100%;
+  }
+
+  .demo__embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color-scheme: light;
+  }
+</style>

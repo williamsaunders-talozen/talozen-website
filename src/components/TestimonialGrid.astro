@@ -1,0 +1,345 @@
+---
+interface Quote {
+  quote: string;
+  name: string;
+  title: string;
+  company: string;
+  avatar?: string;
+  featured?: boolean;
+}
+
+interface Props {
+  headline: string;
+  quotes: Quote[];
+}
+
+const { headline, quotes } = Astro.props;
+
+const hero = quotes.find((q) => q.featured) || quotes[0];
+const supporting = quotes.filter((q) => q !== hero).slice(0, 3);
+const extra = quotes.filter((q) => q !== hero).slice(3);
+---
+
+<section class="testimonials">
+  <div class="tz-container">
+    <div class="testimonials__container">
+    {headline && <h2 class="testimonials__heading reveal">{headline}</h2>}
+
+    <blockquote class="testimonials__hero">
+      <p class="testimonials__hero-quote">&ldquo;{hero.quote}&rdquo;</p>
+      <footer class="testimonials__hero-cite">
+        {hero.avatar
+          ? <img src={hero.avatar} alt={hero.name} class="testimonials__hero-avatar" loading="lazy" />
+          : <span class="testimonials__hero-dash" aria-hidden="true">&mdash;</span>
+        }
+        <div class="testimonials__hero-byline">
+          <span class="testimonials__hero-name">{hero.name}</span>
+          <span class="testimonials__hero-role">{hero.title}, {hero.company}</span>
+        </div>
+      </footer>
+    </blockquote>
+
+    <div class="testimonials__supporting reveal">
+      {supporting.map((q) => (
+        <article class="testimonials__card">
+          <blockquote class="testimonials__card-quote">
+            &ldquo;{q.quote}&rdquo;
+          </blockquote>
+          <footer class="testimonials__card-author">
+            <div class="testimonials__avatar" aria-hidden="true">
+              {q.avatar
+                ? <img src={q.avatar} alt={q.name} class="testimonials__avatar-img" loading="lazy" />
+                : q.name.charAt(0)
+              }
+            </div>
+            <div class="testimonials__author-info">
+              <span class="testimonials__name">{q.name}</span>
+              <span class="testimonials__meta">{q.title}, {q.company}</span>
+            </div>
+          </footer>
+        </article>
+      ))}
+    </div>
+
+    {extra.length > 0 && (
+      <details class="testimonials__more">
+        <summary class="testimonials__toggle">
+          Read more testimonials
+          <svg class="testimonials__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <div class="testimonials__extra">
+          {extra.map((q) => (
+            <article class="testimonials__card">
+              <blockquote class="testimonials__card-quote">
+                &ldquo;{q.quote}&rdquo;
+              </blockquote>
+              <footer class="testimonials__card-author">
+                <div class="testimonials__avatar" aria-hidden="true">
+                  {q.avatar
+                    ? <img src={q.avatar} alt={q.name} class="testimonials__avatar-img" loading="lazy" />
+                    : q.name.charAt(0)
+                  }
+                </div>
+                <div class="testimonials__author-info">
+                  <span class="testimonials__name">{q.name}</span>
+                  <span class="testimonials__meta">{q.title}, {q.company}</span>
+                </div>
+              </footer>
+            </article>
+          ))}
+        </div>
+      </details>
+    )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    background-color: var(--bg-default);
+    padding-top: calc(clamp(var(--space-1200), 8vw, var(--space-2400)) - 120px);
+    padding-bottom: clamp(var(--space-1200), 8vw, var(--space-2400));
+  }
+
+  .testimonials__container {
+    background-color: var(--bg-default);
+    border-radius: 24px;
+    padding: var(--space-1200) var(--space-1200);
+    box-shadow: 0 2px 16px rgba(16, 16, 102, 0.06);
+    animation: testimonials-enter 0.8s var(--ease-out-quart) 0.3s both;
+  }
+
+  @keyframes testimonials-enter {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .testimonials__container {
+      animation: none;
+    }
+  }
+
+  .testimonials__heading {
+    font-family: var(--font-sans);
+    font-size: var(--size-07);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0 0 var(--space-1200);
+  }
+
+  /* ── Hero testimonial ── */
+  .testimonials__hero {
+    margin: 0 0 var(--space-1600);
+    padding: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+    max-width: 48rem;
+  }
+
+  .testimonials__hero-quote {
+    font-family: var(--font-serif);
+    font-size: clamp(var(--size-06), 3.5vw, var(--size-08));
+    font-weight: var(--weight-regular);
+    font-style: italic;
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .testimonials__hero-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    object-position: top center;
+    flex-shrink: 0;
+  }
+
+  .testimonials__hero-byline {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .testimonials__hero-cite {
+    display: flex;
+    align-items: center;
+    gap: var(--space-300);
+    flex-wrap: wrap;
+  }
+
+  .testimonials__hero-dash {
+    color: var(--text-tertiary);
+  }
+
+  .testimonials__hero-name {
+    font-family: var(--font-sans);
+    font-size: var(--size-04);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+    line-height: var(--leading-normal);
+  }
+
+  .testimonials__hero-role {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-regular);
+    color: var(--text-tertiary);
+    line-height: var(--leading-normal);
+  }
+
+  /* ── Supporting cards ── */
+  .testimonials__supporting {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-600);
+  }
+
+  .testimonials__card {
+    background: var(--bg-default);
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-200);
+    padding: var(--space-600);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+    justify-content: space-between;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.25s var(--ease-out-quart), transform 0.25s var(--ease-out-quart);
+  }
+
+  .testimonials__card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .testimonials__card-quote {
+    font-family: var(--font-sans);
+    font-size: var(--size-04);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-snug);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .testimonials__card-author {
+    display: flex;
+    align-items: center;
+    gap: var(--space-300);
+  }
+
+  /* ── Shared author elements ── */
+  .testimonials__avatar {
+    width: var(--icon-md);
+    height: var(--icon-md);
+    border-radius: var(--radius-full);
+    background-color: var(--bg-brand-tertiary);
+    color: var(--text-brand);
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-semibold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .testimonials__avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: var(--radius-full);
+  }
+
+  .testimonials__author-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-050);
+  }
+
+  .testimonials__name {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-semibold);
+    color: var(--text-secondary);
+    line-height: var(--leading-normal);
+  }
+
+  .testimonials__meta {
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    font-weight: var(--weight-regular);
+    color: var(--text-tertiary);
+    line-height: var(--leading-normal);
+  }
+
+  /* ── Progressive disclosure ── */
+  .testimonials__more {
+    margin-top: var(--space-800);
+  }
+
+  .testimonials__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-200);
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-semibold);
+    color: var(--text-brand-tertiary);
+    cursor: pointer;
+    list-style: none;
+    padding: var(--space-300) var(--space-400);
+    min-height: 44px;
+    user-select: none;
+  }
+
+  .testimonials__toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .testimonials__toggle::marker {
+    content: "";
+  }
+
+  .testimonials__chevron {
+    transition: transform 200ms ease;
+  }
+
+  .testimonials__more[open] .testimonials__chevron {
+    transform: rotate(180deg);
+  }
+
+  .testimonials__extra {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-600);
+    margin-top: var(--space-600);
+  }
+
+  /* ── Responsive: 1 col or 3 col only — never 2 (avoids awkward 2+1 layout) ── */
+  @media (max-width: 1023px) {
+    .testimonials__supporting {
+      grid-template-columns: 1fr;
+    }
+
+    .testimonials__extra {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,262 @@
+---
+interface NavLink {
+  label: string;
+  href: string;
+  active?: boolean;
+}
+
+const navLinks: NavLink[] = [
+  { label: "Why Talozen", href: "/#comparison" },
+  { label: "Demo", href: "/#feature-mandates" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "Contact", href: "/contact" },
+];
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__logo" aria-label="Talozen home">
+      <img
+        src="/talozen-logo.svg"
+        alt="Talozen"
+        width="142"
+        height="24"
+        class="site-header__logo-img"
+      />
+    </a>
+
+    <nav class="site-header__nav" aria-label="Main navigation">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class:list={["site-header__pill", { "site-header__pill--active": link.active }]}
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="site-header__auth">
+      <a href="https://calendar.app.google/FKmopiLK35NCPSx27" target="_blank" rel="noopener noreferrer" class="tz-btn tz-btn--tertiary tz-btn--sm">Book a 15 min call</a>
+    </div>
+
+    <button class="site-header__burger" aria-label="Open menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<script>
+  const burger = document.querySelector('.site-header__burger');
+  const nav = document.querySelector('.site-header__nav');
+  const auth = document.querySelector('.site-header__auth');
+  const header = document.querySelector('.site-header') as HTMLElement | null;
+  const inner = document.querySelector('.site-header__inner') as HTMLElement | null;
+
+  burger?.addEventListener('click', () => {
+    const expanded = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!expanded));
+    nav?.classList.toggle('site-header__nav--open');
+    auth?.classList.toggle('site-header__auth--open');
+  });
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      header?.classList.toggle('site-header--scrolled', !entry.isIntersecting);
+    },
+    { threshold: 0 }
+  );
+  const sentinel = document.createElement('div');
+  sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;pointer-events:none;';
+  document.body.prepend(sentinel);
+  observer.observe(sentinel);
+
+  function checkOverflow() {
+    if (!header || !inner) return;
+    header.classList.remove('site-header--compact');
+    const isOverflowing = inner.scrollWidth > inner.clientWidth;
+    if (isOverflowing) {
+      header.classList.add('site-header--compact');
+    }
+  }
+
+  checkOverflow();
+  const resizeObs = new ResizeObserver(checkOverflow);
+  resizeObs.observe(inner!);
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: var(--stroke-border) solid var(--border-default);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .site-header--scrolled {
+    box-shadow: var(--shadow-md);
+    border-bottom-color: transparent;
+  }
+
+  .site-header__inner {
+    max-width: var(--container-lg);
+    margin-inline: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: var(--space-600);
+    padding: var(--space-400) var(--space-800);
+  }
+
+  .site-header--compact .site-header__inner {
+    flex-wrap: wrap;
+  }
+
+  .site-header__logo {
+    display: block;
+    flex-shrink: 0;
+    border-radius: var(--radius-100);
+  }
+
+  .site-header__logo:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .site-header__logo-img {
+    display: block;
+    height: var(--icon-sm);
+    width: auto;
+  }
+
+  .site-header__nav {
+    display: flex;
+    flex-wrap: nowrap;
+    flex: 1;
+    justify-content: flex-end;
+    gap: var(--space-200);
+  }
+
+  .site-header__pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-200);
+    border-radius: var(--radius-200);
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: var(--text-default);
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    position: relative;
+  }
+
+  .site-header__pill::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background-color: var(--bg-brand-secondary);
+    border-radius: 1px;
+    transform: scaleX(0);
+    transition: transform 0.25s var(--ease-out-quart);
+  }
+
+  .site-header__pill:hover {
+    color: var(--text-brand);
+  }
+
+  .site-header__pill:hover::after {
+    transform: scaleX(1);
+  }
+
+  .site-header__pill:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .site-header__pill--active {
+    color: var(--text-brand);
+  }
+
+  .site-header__pill--active::after {
+    transform: scaleX(1);
+  }
+
+  .site-header__auth {
+    display: flex;
+    align-items: center;
+    gap: var(--space-300);
+    flex-shrink: 0;
+  }
+
+  .site-header__burger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--icon-default);
+    cursor: pointer;
+    padding: var(--space-200);
+    border-radius: var(--radius-200);
+    margin-left: auto;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .site-header__burger:hover {
+    background-color: var(--bg-secondary);
+  }
+
+  .site-header__burger:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+
+  .site-header--compact .site-header__inner {
+    padding: var(--space-400);
+  }
+
+  .site-header--compact .site-header__nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: var(--space-100);
+    order: 10;
+  }
+
+  .site-header--compact .site-header__nav--open {
+    display: flex;
+  }
+
+  .site-header--compact .site-header__pill {
+    justify-content: flex-start;
+    padding: var(--space-400) var(--space-400);
+    min-height: 44px;
+  }
+
+  .site-header--compact .site-header__auth {
+    display: none;
+    width: 100%;
+    order: 11;
+  }
+
+  .site-header--compact .site-header__auth--open {
+    display: flex;
+  }
+
+  .site-header--compact .site-header__burger {
+    display: flex;
+  }
+</style>

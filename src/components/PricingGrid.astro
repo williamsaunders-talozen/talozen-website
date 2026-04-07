@@ -1,0 +1,251 @@
+---
+interface PricingItem {
+  text?: string;
+  bold?: string;
+}
+
+interface Tier {
+  name: string;
+  price: string;
+  description: string;
+  cta: string;
+  ctaHref?: string;
+  items: (PricingItem | string)[];
+}
+
+interface Props {
+  headline: string;
+  subheadline?: string;
+  tiers: Tier[];
+}
+
+const { headline, subheadline, tiers } = Astro.props;
+---
+
+<section class="pricing tz-textured">
+  <div class="tz-container">
+    <div class="pricing__header reveal">
+      <h2 class="pricing__heading">{headline}</h2>
+      {subheadline && <p class="pricing__subheading">{subheadline}</p>}
+    </div>
+    <div class="pricing__grid reveal">
+      {tiers.map((tier, i) => (
+        <div class:list={["pricing-card", "tz-card", { "pricing-card--featured": i === 1 }]}>
+          <div class="pricing-card__top">
+            
+            <p class="pricing-card__name">{tier.name}</p>
+            <p class="pricing-card__price">{tier.price}</p>
+            <p class="pricing-card__description">{tier.description}</p>
+          </div>
+          <ul class="pricing-card__items">
+            {tier.items.map((item) => {
+              const isBold = typeof item === "object" && "bold" in item;
+              const text = typeof item === "string" ? item : (isBold ? item.bold : item.text);
+              return (
+                <li class="pricing-card__item">
+                  <svg class="pricing-card__check" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" stroke="var(--border-brand)" stroke-width="1.5"/>
+                    <path d="M8 12l3 3 5-5" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span class:list={[{ "pricing-card__item--bold": isBold }]}>{text}</span>
+                </li>
+              );
+            })}
+          </ul>
+          <div class="pricing-card__cta">
+            <a
+              href={tier.ctaHref ?? "/signup"}
+              target={tier.ctaHref?.startsWith("http") ? "_blank" : undefined}
+              rel={tier.ctaHref?.startsWith("http") ? "noopener noreferrer" : undefined}
+              class="tz-btn pricing-card__cta-btn tz-btn--tertiary"
+            >
+              {tier.cta}
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pricing {
+    background-color: var(--bg-secondary);
+    padding-block: clamp(var(--space-1600), 10vw, var(--space-2400));
+  }
+
+  .pricing__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+    align-items: center;
+    text-align: center;
+    margin-bottom: var(--space-1200);
+  }
+
+  .pricing__heading {
+    font-family: var(--font-sans);
+    font-size: var(--size-07);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .pricing__subheading {
+    font-family: var(--font-sans);
+    font-size: var(--size-05);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: 50ch;
+  }
+
+  .pricing__grid {
+    display: flex;
+    gap: var(--space-800);
+    align-items: stretch;
+  }
+
+  .pricing-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+    padding: var(--space-800);
+    transition: box-shadow 0.25s var(--ease-out-quart), transform 0.25s var(--ease-out-quart);
+  }
+
+  .pricing-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .pricing-card--featured:hover {
+    box-shadow: 0 8px 32px rgba(16, 16, 102, 0.14), 0 2px 8px rgba(16, 16, 102, 0.08);
+  }
+
+  .pricing-card--featured {
+    background-color: var(--bg-default);
+    border: 3px solid var(--bg-brand-secondary);
+    box-shadow: 0 4px 24px rgba(16, 16, 102, 0.10), 0 1px 4px rgba(16, 16, 102, 0.06);
+    scale: 1.02;
+  }
+
+  .pricing-card--featured .pricing-card__name {
+    color: var(--text-brand);
+  }
+
+  .pricing-card--featured .pricing-card__price {
+    color: var(--text-default);
+  }
+
+  .pricing-card--featured .pricing-card__cta-btn.tz-btn--tertiary {
+    background: var(--bg-brand);
+    border-color: var(--bg-brand);
+    color: #fff;
+  }
+
+  .pricing-card--featured .pricing-card__cta-btn.tz-btn--tertiary:hover {
+    background: var(--bg-brand-hover, var(--bg-brand));
+    border-color: var(--bg-brand-hover, var(--bg-brand));
+  }
+
+  .pricing-card__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-100) var(--space-300);
+    border-radius: var(--radius-full);
+    background-color: var(--bg-accent);
+    color: var(--text-on-accent);
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .pricing-card__top {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+  }
+
+  .pricing-card__name {
+    font-family: var(--font-sans);
+    font-size: var(--size-05);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .pricing-card__price {
+    font-family: var(--font-sans);
+    font-size: var(--size-07);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pricing-card__description {
+    font-family: var(--font-sans);
+    font-size: var(--size-04);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .pricing-card__items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-400);
+    flex: 1;
+  }
+
+  .pricing-card__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-400);
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--text-default);
+  }
+
+  .pricing-card__item--bold {
+    font-weight: var(--weight-bold);
+  }
+
+  .pricing-card__check {
+    flex-shrink: 0;
+  }
+
+  .pricing-card__cta {
+    margin-top: auto;
+    padding-top: var(--space-600);
+    border-top: var(--stroke-border) solid var(--border-default);
+  }
+
+  .pricing-card__cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  @media (max-width: 767px) {
+    .pricing__grid {
+      flex-direction: column;
+    }
+  }
+</style>

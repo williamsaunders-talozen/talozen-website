@@ -1,0 +1,80 @@
+---
+interface Logo {
+  name: string;
+  image?: string;
+}
+
+interface Props {
+  headline: string;
+  logos: Logo[];
+}
+
+const { headline, logos } = Astro.props;
+---
+
+<section class="logo-bar">
+  <div class="tz-container">
+    {headline && <h2 class="logo-bar__heading">{headline}</h2>}
+    <div class="logo-bar__logos">
+      {logos.map((logo) => (
+        <div class="logo-bar__item">
+          {logo.image
+            ? <img src={logo.image} alt={logo.name} class="logo-bar__img" />
+            : <span class="logo-bar__placeholder">{logo.name.toUpperCase()}</span>
+          }
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .logo-bar {
+    background-color: var(--bg-default);
+    padding-block: var(--space-600);
+  }
+
+  .logo-bar__heading {
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-normal);
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-tertiary);
+    text-align: center;
+    text-transform: uppercase;
+    margin: 0 0 var(--space-800);
+  }
+
+  .logo-bar__logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-600);
+  }
+
+  .logo-bar__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-200) var(--space-600);
+    min-height: 72px;
+  }
+
+  .logo-bar__img {
+    display: block;
+    height: 72px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .logo-bar__placeholder {
+    font-family: var(--font-sans);
+    font-size: var(--size-07);
+    font-weight: var(--weight-regular);
+    color: var(--text-default);
+    white-space: nowrap;
+    line-height: 1;
+  }
+</style>

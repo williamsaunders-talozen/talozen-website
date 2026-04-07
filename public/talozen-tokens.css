@@ -1,0 +1,639 @@
+/* =============================================================================
+   TALOZEN DESIGN SYSTEM — Generated from Figma Variables
+   Source files: Value_tokens, SDS_Light_tokens, SDS_Dark_tokens,
+                 Default (space/radius/depth), Default 2 (typography),
+                 Desktop/Tablet/Mobile (responsive)
+   =============================================================================
+
+   USAGE:
+   - Import this file once at the root of your project.
+   - Light mode is the default (:root). Dark mode activates via [data-theme="dark"]
+     or the prefers-color-scheme media query.
+   - All component/page CSS should reference these variables only — never
+     raw hex values. This ensures a single-source-of-truth for brand updates.
+
+   STRUCTURE:
+   1. Primitive color palette    (--color-brand-*, --color-neutral-*, etc.)
+   2. Primitive typography       (--font-*, --size-*)
+   3. Primitive spacing/layout   (--space-*, --radius-*, --depth-*, --stroke-*)
+   4. Semantic tokens — Light    (:root)
+   5. Semantic tokens — Dark     ([data-theme="dark"] / @media)
+   6. Responsive tokens          (breakpoints + fluid scale)
+   7. Utility classes            (convenience helpers)
+   ============================================================================= */
+
+/* ─────────────────────────────────────────────
+   1. PRIMITIVE COLOR PALETTE
+   Raw brand color ramp — use semantic tokens in components,
+   only reference primitives here or in the semantic layer.
+   ───────────────────────────────────────────── */
+:root {
+  /* Brand (periwinkle blue-violet) */
+  --color-brand-100: #D4D4FF;
+  --color-brand-200: #A9A9FF;
+  --color-brand-300: #7D7DFF;
+  --color-brand-400: #5252FF;
+  --color-brand-500: #2727FF;
+  --color-brand-600: #1F1FCC;
+  --color-brand-700: #171799;
+  --color-brand-800: #101066;
+  --color-brand-900: #080833;
+
+  /* Neutral */
+  --color-neutral-0:   #FFFFFF;
+  --color-neutral-50:  #F5F5F5;
+  --color-neutral-100: #E6E6E6;
+  --color-neutral-150: #D9D9D9;
+  --color-neutral-200: #CDCDCD;
+  --color-neutral-300: #B3B3B3;
+  --color-neutral-400: #949494;
+  --color-neutral-500: #767676;
+  --color-neutral-600: #757575;
+  --color-neutral-700: #5A5A5A;
+  --color-neutral-800: #434343;
+  --color-neutral-850: #383838;
+  --color-neutral-900: #303030;
+  --color-neutral-950: #2C2C2C;
+  --color-neutral-975: #1E1E1E;
+  --color-neutral-1000: #000000;
+
+  /* Positive (green) */
+  --color-positive-100: #EBFFEE;
+  --color-positive-200: #CFF7D3;
+  --color-positive-300: #AFF4C6;
+  --color-positive-400: #85E0A3;
+  --color-positive-500: #14AE5C;
+  --color-positive-600: #009951;
+  --color-positive-700: #008043;
+  --color-positive-800: #02542D;
+  --color-positive-900: #024023;
+  --color-positive-950: #062D1B;
+
+  /* Warning (amber) */
+  --color-warning-100: #FFFBEB;
+  --color-warning-200: #FFF1C2;
+  --color-warning-300: #FFE8A3;
+  --color-warning-500: #E8B931;
+  --color-warning-600: #E5A000;
+  --color-warning-700: #BF6A02;
+  --color-warning-800: #975102;
+  --color-warning-850: #682D03;
+  --color-warning-900: #522504;
+  --color-warning-950: #401B01;
+
+  /* Danger (red) */
+  --color-danger-100: #FEE9E7;
+  --color-danger-200: #FDD3D0;
+  --color-danger-300: #FCB3AD;
+  --color-danger-400: #F4776A;
+  --color-danger-500: #EC221F;
+  --color-danger-600: #C00F0C;
+  --color-danger-700: #900B09;
+  --color-danger-800: #690807;
+  --color-danger-850: #4D0B0A;
+  --color-danger-900: #300603;
+}
+
+/* ─────────────────────────────────────────────
+   2. PRIMITIVE TYPOGRAPHY
+   Fonts: Plus Jakarta Sans (sans), Newsreader (serif), Roboto Mono (mono)
+   ───────────────────────────────────────────── */
+:root {
+  /* Font families */
+  --font-sans:  'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-mono:  'Roboto Mono', 'Courier New', monospace;
+
+  /* Type scale (px → rem at 16px root) */
+  --size-01: 0.75rem;   /* 12px */
+  --size-02: 0.875rem;  /* 14px */
+  --size-03: 1rem;      /* 16px — body base */
+  --size-04: 1.25rem;   /* 20px */
+  --size-05: 1.5rem;    /* 24px */
+  --size-06: 2rem;      /* 32px */
+  --size-07: 2.5rem;    /* 40px */
+  --size-08: 3rem;      /* 48px */
+  --size-09: 4rem;      /* 64px */
+  --size-10: 4.5rem;    /* 72px */
+
+  /* Font weights */
+  --weight-thin:        100;
+  --weight-extralight:  200;
+  --weight-light:       300;
+  --weight-regular:     400;
+  --weight-medium:      500;
+  --weight-semibold:    600;
+  --weight-bold:        700;
+  --weight-extrabold:   800;
+  --weight-black:       900;
+
+  /* Line heights (unitless) */
+  --leading-tight:   1.2;
+  --leading-snug:    1.35;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+
+  /* Letter spacing */
+  --tracking-tight:  -0.02em;
+  --tracking-normal:  0em;
+  --tracking-wide:    0.05em;
+  --tracking-widest:  0.1em;
+}
+
+/* ─────────────────────────────────────────────
+   3. PRIMITIVE SPACING / LAYOUT / RADIUS / DEPTH
+   ───────────────────────────────────────────── */
+:root {
+  /* Spacing (gap, padding, margin) */
+  --space-0:    0px;
+  --space-050:  2px;
+  --space-100:  4px;
+  --space-150:  6px;
+  --space-200:  8px;
+  --space-300:  12px;
+  --space-400:  16px;
+  --space-600:  24px;
+  --space-800:  32px;
+  --space-1200: 48px;
+  --space-1600: 64px;
+  --space-2400: 96px;
+  --space-4000: 160px;
+
+  /* Negative space */
+  --space-n100: -4px;
+  --space-n200: -8px;
+  --space-n300: -12px;
+  --space-n400: -16px;
+  --space-n600: -24px;
+
+  /* Border radius */
+  --radius-100: 4px;
+  --radius-200: 8px;
+  --radius-400: 16px;
+  --radius-full: 9999px;
+
+  /* Elevation / depth (box-shadow Z levels) */
+  --depth-0:    0px;
+  --depth-025:  1px;
+  --depth-100:  4px;
+  --depth-200:  8px;
+  --depth-400:  16px;
+  --depth-800:  32px;
+  --depth-1200: 48px;
+
+  /* Stroke widths */
+  --stroke-border:     1px;
+  --stroke-focus-ring: 2px;
+
+  /* Blur */
+  --blur-100: 4px;
+
+  /* Icon sizes */
+  --icon-sm: 24px;
+  --icon-md: 32px;
+  --icon-lg: 40px;
+
+  /* Shadows (built from depth tokens) */
+  --shadow-sm:  0 var(--depth-025) var(--depth-100) 0 rgba(0,0,0,0.08);
+  --shadow-md:  0 var(--depth-100) var(--depth-200) 0 rgba(0,0,0,0.10);
+  --shadow-lg:  0 var(--depth-200) var(--depth-400) 0 rgba(0,0,0,0.12);
+  --shadow-xl:  0 var(--depth-400) var(--depth-800) 0 rgba(0,0,0,0.16);
+}
+
+/* ─────────────────────────────────────────────
+   4. SEMANTIC TOKENS — LIGHT MODE (default)
+   These are the variables components should use.
+   Swapping themes only requires updating these.
+   ───────────────────────────────────────────── */
+:root,
+[data-theme="light"] {
+
+  /* --- Background --- */
+  --bg-default:              #FAF9F7;
+  --bg-default-hover:        #F2F2FA;
+  --bg-secondary:            #F5F3F0;
+  --bg-secondary-hover:      #EBE8E4;
+
+  --bg-secondary-element:   #212121;
+  --bg-secondary-element-hover: #2d2d2d;
+  --text-on-secondary-element: #FFFFFF;
+  --bg-tertiary:             #DDD9D4;
+  --bg-tertiary-hover:       #B2B2BE;
+
+  --bg-neutral:              #595960;
+  --bg-neutral-hover:        #42424A;
+  --bg-neutral-secondary:    #CCCCDA;
+  --bg-neutral-tertiary:     #E2E2EC;
+
+  --bg-brand:                #101066;
+  --bg-brand-hover:          #080833;
+  --bg-brand-secondary:      #A9A9FF;
+  --bg-brand-tertiary:       #D4D4FF;
+
+  --bg-accent:               #C0392B;
+  --bg-accent-hover:         #A03020;
+  --bg-accent-secondary:     #FCE4E1;
+  --bg-accent-tertiary:      #FEF2F0;
+
+  --bg-positive:             #14AE5C;
+  --bg-positive-secondary:   #CFF7D3;
+  --bg-positive-tertiary:    #EBFFEE;
+
+  --bg-warning:              #E8B931;
+  --bg-warning-secondary:    #FFF1C2;
+  --bg-warning-tertiary:     #FFFBEB;
+
+  --bg-danger:               #EC221F;
+  --bg-danger-secondary:     #FDD3D0;
+  --bg-danger-tertiary:      #FEE9E7;
+
+  --bg-disabled:             #D8D8E2;
+
+  /* --- Text --- */
+  --text-default:            #1E1E1E;
+  --text-secondary:          #757575;
+  --text-tertiary:           #B3B3B3;
+  --text-disabled:           #B3B3B3;
+
+  --text-brand:              #101066;
+  --text-brand-secondary:    #1F1FCC;
+  --text-brand-tertiary:     #2727FF;
+  --text-on-brand:           #D4D4FF;
+
+  --text-accent:             #A03020;
+  --text-accent-secondary:   #C0392B;
+  --text-on-accent:          #FFFFFF;
+
+  --text-positive:           #02542D;
+  --text-positive-secondary: #009951;
+  --text-on-positive:        #EBFFEE;
+
+  --text-warning:            #522504;
+  --text-warning-secondary:  #975102;
+  --text-on-warning:         #401B01;
+
+  --text-danger:             #900B09;
+  --text-danger-secondary:   #C00F0C;
+  --text-on-danger:          #FEE9E7;
+
+  /* --- Border --- */
+  --border-default:          #D8D8E2;
+  --border-secondary:        #747480;
+  --border-tertiary:         #37373F;
+
+  --border-brand:            #101066;
+  --border-brand-secondary:  #1F1FCC;
+  --border-brand-tertiary:   #2727FF;
+
+  --border-accent:           #C0392B;
+  --border-accent-secondary: #D96A5E;
+
+  --border-positive:         #02542D;
+  --border-warning:          #522504;
+  --border-danger:           #900B09;
+  --border-disabled:         #B3B3B3;
+
+  /* --- Icon --- */
+  --icon-default:            #1E1E1E;
+  --icon-secondary:          #757575;
+  --icon-tertiary:           #B3B3B3;
+  --icon-brand:              #101066;
+  --icon-on-brand:           #D4D4FF;
+  --icon-positive:           #02542D;
+  --icon-warning:            #522504;
+  --icon-danger:             #900B09;
+  --icon-disabled:           #B3B3B3;
+
+  /* --- Focus ring --- */
+  --focus-ring-color:        #2727FF;
+  --focus-ring:              0 0 0 var(--stroke-focus-ring) var(--focus-ring-color);
+}
+
+/* ─────────────────────────────────────────────
+   5. SEMANTIC TOKENS — DARK MODE
+   ───────────────────────────────────────────── */
+[data-theme="dark"],
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+
+    /* --- Background --- */
+    --bg-default:              #1E1E1E;
+    --bg-default-hover:        #383838;
+    --bg-secondary:            #2C2C2C;
+    --bg-secondary-hover:      #1E1E1E;
+    --bg-tertiary:             #444444;
+    --bg-tertiary-hover:       #383838;
+
+    --bg-neutral:              #B2B2B2;
+    --bg-neutral-hover:        #949494;
+    --bg-neutral-secondary:    #303030;
+    --bg-neutral-tertiary:     #303030;
+
+    --bg-brand:                #D4D4FF;
+    --bg-brand-hover:          #7D7DFF;
+    --bg-brand-secondary:      #1F1FCC;
+    --bg-brand-tertiary:       #1F1FCC;
+
+    --bg-positive:             #008043;
+    --bg-positive-secondary:   #02542D;
+    --bg-positive-tertiary:    #024023;
+
+    --bg-warning:              #E8B931;
+    --bg-warning-secondary:    #682D03;
+    --bg-warning-tertiary:     #522504;
+
+    --bg-danger:               #C00F0C;
+    --bg-danger-secondary:     #690807;
+    --bg-danger-tertiary:      #4D0B0A;
+
+    --bg-disabled:             #383838;
+
+    /* --- Text --- */
+    --text-default:            #FFFFFF;
+    --text-secondary:          #FFFFFF;
+    --text-tertiary:           #FFFFFF;
+    --text-disabled:           #757575;
+
+    --text-brand:              #D4D4FF;
+    --text-brand-secondary:    #7D7DFF;
+    --text-brand-tertiary:     #5252FF;
+    --text-on-brand:           #080833;
+
+    --text-positive:           #CFF7D3;
+    --text-positive-secondary: #85E0A3;
+    --text-on-positive:        #EBFFEE;
+
+    --text-warning:            #FFF1C2;
+    --text-warning-secondary:  #E8B931;
+    --text-on-warning:         #401B01;
+
+    --text-danger:             #FDD3D0;
+    --text-danger-secondary:   #F4776A;
+    --text-on-danger:          #FEE9E7;
+
+    /* --- Border --- */
+    --border-default:          #444444;
+    --border-secondary:        #757575;
+    --border-tertiary:         #B3B3B3;
+
+    --border-brand:            #D4D4FF;
+    --border-brand-secondary:  #7D7DFF;
+    --border-brand-tertiary:   #5252FF;
+
+    --border-positive:         #CFF7D3;
+    --border-warning:          #FFF1C2;
+    --border-danger:           #FDD3D0;
+    --border-disabled:         #444444;
+
+    /* --- Icon --- */
+    --icon-default:            #FFFFFF;
+    --icon-secondary:          #FFFFFF;
+    --icon-tertiary:           #FFFFFF;
+    --icon-brand:              #D4D4FF;
+    --icon-on-brand:           #080833;
+    --icon-positive:           #CFF7D3;
+    --icon-warning:            #FFF1C2;
+    --icon-danger:             #FDD3D0;
+    --icon-disabled:           #757575;
+
+    /* --- Focus ring --- */
+    --focus-ring-color:        #7D7DFF;
+    --focus-ring:              0 0 0 var(--stroke-focus-ring) var(--focus-ring-color);
+
+    /* --- Shadows (darken on dark bg) --- */
+    --shadow-sm:  0 var(--depth-025) var(--depth-100) 0 rgba(0,0,0,0.24);
+    --shadow-md:  0 var(--depth-100) var(--depth-200) 0 rgba(0,0,0,0.32);
+    --shadow-lg:  0 var(--depth-200) var(--depth-400) 0 rgba(0,0,0,0.40);
+    --shadow-xl:  0 var(--depth-400) var(--depth-800) 0 rgba(0,0,0,0.48);
+  }
+}
+
+/* Also support class-based dark mode directly on root */
+[data-theme="dark"] {
+  --bg-default:              #1E1E1E;
+  --bg-default-hover:        #383838;
+  --bg-secondary:            #2C2C2C;
+  --bg-secondary-hover:      #1E1E1E;
+  --bg-tertiary:             #444444;
+  --bg-tertiary-hover:       #383838;
+  --bg-neutral:              #B2B2B2;
+  --bg-neutral-secondary:    #303030;
+  --bg-neutral-tertiary:     #303030;
+  --bg-brand:                #D4D4FF;
+  --bg-brand-hover:          #7D7DFF;
+  --bg-brand-secondary:      #1F1FCC;
+  --bg-brand-tertiary:       #1F1FCC;
+  --bg-positive:             #008043;
+  --bg-positive-secondary:   #02542D;
+  --bg-positive-tertiary:    #024023;
+  --bg-warning:              #E8B931;
+  --bg-warning-secondary:    #682D03;
+  --bg-warning-tertiary:     #522504;
+  --bg-danger:               #C00F0C;
+  --bg-danger-secondary:     #690807;
+  --bg-danger-tertiary:      #4D0B0A;
+  --bg-disabled:             #383838;
+  --text-default:            #FFFFFF;
+  --text-secondary:          #FFFFFF;
+  --text-tertiary:           #FFFFFF;
+  --text-disabled:           #757575;
+  --text-brand:              #D4D4FF;
+  --text-brand-secondary:    #7D7DFF;
+  --text-brand-tertiary:     #5252FF;
+  --text-on-brand:           #080833;
+  --text-positive:           #CFF7D3;
+  --text-positive-secondary: #85E0A3;
+  --text-on-positive:        #EBFFEE;
+  --text-warning:            #FFF1C2;
+  --text-warning-secondary:  #E8B931;
+  --text-on-warning:         #401B01;
+  --text-danger:             #FDD3D0;
+  --text-danger-secondary:   #F4776A;
+  --text-on-danger:          #FEE9E7;
+  --border-default:          #444444;
+  --border-secondary:        #757575;
+  --border-tertiary:         #B3B3B3;
+  --border-brand:            #D4D4FF;
+  --border-brand-secondary:  #7D7DFF;
+  --border-brand-tertiary:   #5252FF;
+  --border-positive:         #CFF7D3;
+  --border-warning:          #FFF1C2;
+  --border-danger:           #FDD3D0;
+  --border-disabled:         #444444;
+  --icon-default:            #FFFFFF;
+  --icon-secondary:          #FFFFFF;
+  --icon-tertiary:           #FFFFFF;
+  --icon-brand:              #D4D4FF;
+  --icon-on-brand:           #080833;
+  --icon-positive:           #CFF7D3;
+  --icon-warning:            #FFF1C2;
+  --icon-danger:             #FDD3D0;
+  --icon-disabled:           #757575;
+  --focus-ring-color:        #7D7DFF;
+  --focus-ring:              0 0 0 var(--stroke-focus-ring) var(--focus-ring-color);
+  --shadow-sm:  0 1px 4px 0 rgba(0,0,0,0.24);
+  --shadow-md:  0 4px 8px 0 rgba(0,0,0,0.32);
+  --shadow-lg:  0 8px 16px 0 rgba(0,0,0,0.40);
+  --shadow-xl:  0 16px 32px 0 rgba(0,0,0,0.48);
+}
+
+/* ─────────────────────────────────────────────
+   6. RESPONSIVE TOKENS
+   Breakpoints match Figma: mobile 375, tablet 768, desktop 1200
+   ───────────────────────────────────────────── */
+:root {
+  --breakpoint-mobile:  375px;
+  --breakpoint-tablet:  768px;
+  --breakpoint-desktop: 1200px;
+
+  /* Layout max widths */
+  --container-sm:  640px;
+  --container-md:  768px;
+  --container-lg:  1200px;
+  --container-xl:  1440px;
+
+  /* Section vertical padding (fluid) */
+  --section-py: clamp(var(--space-1200), 8vw, var(--space-2400));
+
+  /* Default root font size: 16px across all breakpoints */
+  font-size: 16px;
+}
+
+/* Mobile scale factor: 1.25 (from Mobile_tokens.json) */
+@media (max-width: 767px) {
+  :root {
+    --fluid-scale: 1.25;
+    /* Slightly tighter spacing on mobile */
+    --section-py: var(--space-1200);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   7. UTILITY CLASSES
+   Optional convenience classes for rapid layout.
+   Use sparingly — prefer component-level styles.
+   ───────────────────────────────────────────── */
+
+/* Container */
+.tz-container {
+  width: 100%;
+  max-width: var(--container-lg);
+  margin-inline: auto;
+  padding-inline: var(--space-800);
+}
+
+@media (max-width: 767px) {
+  .tz-container { padding-inline: var(--space-400); }
+}
+
+/* Typography helpers */
+.tz-text-brand    { color: var(--text-brand); }
+.tz-text-default  { color: var(--text-default); }
+.tz-text-muted    { color: var(--text-secondary); }
+.tz-bg-brand      { background-color: var(--bg-brand); }
+.tz-bg-default    { background-color: var(--bg-default); }
+.tz-bg-secondary  { background-color: var(--bg-secondary); }
+
+/* Focus ring — apply to interactive elements */
+.tz-focus:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Card base */
+.tz-card {
+  background: var(--bg-default);
+  border: var(--stroke-border) solid var(--border-default);
+  border-radius: var(--radius-200);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Badge base */
+.tz-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-050) var(--space-200);
+  border-radius: var(--radius-full);
+  font-size: var(--size-01);
+  font-weight: var(--weight-medium);
+  font-family: var(--font-sans);
+}
+.tz-badge--brand {
+  background: var(--bg-brand-tertiary);
+  color: var(--text-brand);
+}
+.tz-badge--positive {
+  background: var(--bg-positive-tertiary);
+  color: var(--text-positive);
+}
+
+/* Button base */
+.tz-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-200);
+  padding: var(--space-300) var(--space-600);
+  border-radius: var(--radius-200);
+  font-family: var(--font-sans);
+  font-size: var(--size-03);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  cursor: pointer;
+  border: var(--stroke-border) solid transparent;
+  text-decoration: none;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.tz-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+.tz-btn--primary {
+  background: var(--bg-secondary-element);
+  color: var(--text-on-secondary-element);
+  border-color: var(--bg-secondary-element);
+}
+.tz-btn--primary:hover {
+  background: var(--bg-secondary-element-hover);
+  border-color: var(--bg-secondary-element-hover);
+}
+.tz-btn--secondary {
+  background: var(--bg-secondary-element);
+  color: var(--text-on-secondary-element);
+  border-color: var(--bg-secondary-element);
+}
+.tz-btn--secondary:hover {
+  background: var(--bg-secondary-element-hover);
+  border-color: var(--bg-secondary-element-hover);
+}
+.tz-btn--tertiary {
+  background: var(--bg-default);
+  color: var(--text-default);
+  border-color: var(--border-default);
+}
+.tz-btn--tertiary:hover {
+  background: var(--bg-secondary);
+  border-color: var(--border-default);
+}
+.tz-btn--ghost {
+  background: transparent;
+  color: var(--text-default);
+  border-color: var(--border-default);
+}
+.tz-btn--ghost:hover {
+  background: var(--bg-secondary);
+}
+.tz-btn--sm {
+  padding: var(--space-200) var(--space-400);
+  font-size: var(--size-02);
+}
+.tz-btn--lg {
+  padding: var(--space-400) var(--space-800);
+  font-size: var(--size-04);
+}
+.tz-btn:disabled {
+  background: var(--bg-disabled);
+  color: var(--text-disabled);
+  border-color: var(--border-disabled);
+  cursor: not-allowed;
+}

@@ -1,0 +1,348 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+const footerLinks = {
+  linkGroups: [
+    {
+      title: "Social",
+      links: [{ label: "LinkedIn", href: "https://www.linkedin.com/company/talozenplatform/" }],
+    },
+    {
+      title: "Support",
+      links: [{ label: "Contact us", href: "/contact" }],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Terms and Conditions", href: "/legal#terms" },
+        { label: "Privacy Policy", href: "/legal#privacy" },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title="Contact Us — Talozen" description="Get in touch with the Talozen team.">
+  <SiteHeader />
+  <main class="contact-page">
+    <div class="tz-container contact-page__inner">
+
+      <!-- Left: copy + contact info -->
+      <div class="contact-page__content">
+        <p class="contact-page__eyebrow">Get in touch</p>
+        <h1 class="contact-page__title">We'd love to hear from you</h1>
+        <p class="contact-page__subtitle">Whether you're ready to get started or just want to learn more, reach out and we'll get back to you quickly.</p>
+
+        <a
+          href="https://calendar.app.google/FKmopiLK35NCPSx27"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tz-btn tz-btn--primary contact-page__cta"
+        >
+          Book a 15 min call
+        </a>
+
+        <div class="contact-page__cards">
+          <div class="contact-page__card">
+            <div class="contact-page__card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="contact-page__card-body">
+              <p class="contact-page__card-label">Email us</p>
+              <a href="mailto:info@talozen.com" class="contact-page__card-value">info@talozen.com</a>
+            </div>
+          </div>
+
+          <div class="contact-page__card">
+            <div class="contact-page__card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div class="contact-page__card-body">
+              <p class="contact-page__card-label">Visit us</p>
+              <address class="contact-page__card-value">
+                222 Smit Street<br />
+                21st Floor<br />
+                Braamfontein, 2000
+              </address>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: contact form -->
+      <div class="contact-page__form-wrap">
+        <h2 class="contact-form__heading">Send us a message</h2>
+        <form class="contact-form" name="contact" netlify data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="contact-form__honeypot" aria-hidden="true">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </p>
+
+          <div class="contact-form__row">
+            <div class="contact-form__field">
+              <label class="contact-form__label" for="first-name">First name</label>
+              <input class="contact-form__input" type="text" id="first-name" name="first-name" required placeholder="Jane" />
+            </div>
+            <div class="contact-form__field">
+              <label class="contact-form__label" for="last-name">Last name</label>
+              <input class="contact-form__input" type="text" id="last-name" name="last-name" required placeholder="Smith" />
+            </div>
+          </div>
+
+          <div class="contact-form__field">
+            <label class="contact-form__label" for="agency-name">Agency name</label>
+            <input class="contact-form__input" type="text" id="agency-name" name="agency-name" required placeholder="Apex Properties" />
+          </div>
+
+          <div class="contact-form__row">
+            <div class="contact-form__field">
+              <label class="contact-form__label" for="rental-units">Number of rental units</label>
+              <input class="contact-form__input" type="number" id="rental-units" name="rental-units" min="0" placeholder="e.g. 50" />
+            </div>
+            <div class="contact-form__field">
+              <label class="contact-form__label" for="sales-units">Number of sales units</label>
+              <input class="contact-form__input" type="number" id="sales-units" name="sales-units" min="0" placeholder="e.g. 20" />
+            </div>
+          </div>
+
+          <div class="contact-form__row">
+            <div class="contact-form__field">
+              <label class="contact-form__label" for="phone">Phone number</label>
+              <input class="contact-form__input" type="tel" id="phone" name="phone" placeholder="+27 82 000 0000" />
+            </div>
+            <div class="contact-form__field">
+              <label class="contact-form__label" for="email">Email address</label>
+              <input class="contact-form__input" type="email" id="email" name="email" required placeholder="jane@apexproperties.co.za" />
+            </div>
+          </div>
+
+          <div class="contact-form__field">
+            <label class="contact-form__label" for="problem">What problem are you hoping to solve with Talozen?</label>
+            <textarea class="contact-form__input contact-form__textarea" id="problem" name="problem" rows="4" placeholder="Tell us about your current challenges…"></textarea>
+          </div>
+
+          <button type="submit" class="tz-btn tz-btn--primary contact-form__submit">Send message</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+  <SiteFooter {...footerLinks} />
+</BaseLayout>
+
+<style>
+  .contact-page {
+    padding-top: 40px;
+    background-color: var(--bg-secondary);
+  }
+
+  .contact-page__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: clamp(var(--space-1200), 6vw, var(--space-2400));
+    padding-top: clamp(var(--space-800), 4vw, var(--space-1200));
+    padding-bottom: clamp(96px, 14vw, 200px);
+    align-items: stretch;
+  }
+
+  .contact-page__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact-page__eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-brand);
+    margin: 0 0 var(--space-400);
+  }
+
+  .contact-page__title {
+    font-family: var(--font-sans);
+    font-size: clamp(var(--size-07), 3.5vw, var(--size-08));
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+    margin: 0 0 var(--space-600);
+  }
+
+  .contact-page__subtitle {
+    font-family: var(--font-sans);
+    font-size: var(--size-04);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-800);
+  }
+
+  .contact-page__cta {
+    align-self: flex-start;
+    text-decoration: none;
+    margin-bottom: var(--space-1200);
+    background: var(--bg-brand);
+    border-color: var(--bg-brand);
+    color: #fff;
+  }
+
+  .contact-page__cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+    margin-top: auto;
+  }
+
+  .contact-page__card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-600);
+    background: var(--bg-default);
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-400);
+    padding: var(--space-600) var(--space-800);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .contact-page__card-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-200);
+    background: var(--bg-brand-tertiary);
+    color: var(--text-brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contact-page__card-label {
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-100);
+  }
+
+  .contact-page__card-value {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-medium);
+    color: var(--text-default);
+    text-decoration: none;
+    font-style: normal;
+    line-height: var(--leading-normal);
+  }
+
+  a.contact-page__card-value:hover {
+    color: var(--text-brand);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── Form ── */
+  .contact-page__form-wrap {
+    background: var(--bg-default);
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-400);
+    padding: clamp(var(--space-800), 4vw, var(--space-1200));
+    box-shadow: var(--shadow-md);
+  }
+
+  .contact-form__heading {
+    font-family: var(--font-sans);
+    font-size: var(--size-05);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+    margin: 0 0 var(--space-600);
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+  }
+
+  .contact-form__honeypot {
+    display: none;
+  }
+
+  .contact-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-600);
+  }
+
+  .contact-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  .contact-form__label {
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+  }
+
+  .contact-form__input {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    color: var(--text-default);
+    background: var(--bg-default);
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-200);
+    padding: var(--space-300) var(--space-400);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+  }
+
+  .contact-form__input::placeholder {
+    color: var(--text-placeholder, var(--text-secondary));
+  }
+
+  .contact-form__input:focus {
+    border-color: var(--border-brand);
+    box-shadow: 0 0 0 3px rgba(39, 39, 255, 0.1);
+  }
+
+  .contact-form__textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .contact-form__submit {
+    align-self: flex-start;
+    cursor: pointer;
+    background: var(--bg-brand);
+    border-color: var(--bg-brand);
+    color: #fff;
+  }
+
+
+  @media (max-width: 900px) {
+    .contact-page__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .contact-form__row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

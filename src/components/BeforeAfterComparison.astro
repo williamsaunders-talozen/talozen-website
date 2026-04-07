@@ -1,0 +1,322 @@
+---
+interface ComparisonRow {
+  before: { title: string; body: string; icon?: string };
+  after:  { title: string; body: string; icon?: string };
+}
+
+interface Props {
+  headline?: string;
+  subheadline?: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+  rows: ComparisonRow[];
+}
+
+import { iconPaths } from '../utils/icon-paths';
+
+const {
+  headline,
+  subheadline,
+  beforeLabel = "Before Talozen",
+  afterLabel = "With Talozen",
+  rows = [],
+} = Astro.props;
+---
+
+<section class="comparison">
+  <div class="tz-container">
+    {headline && (
+      <div class="comparison__header reveal">
+        <h2 class="comparison__heading">{headline}</h2>
+        {subheadline && <p class="comparison__subheading">{subheadline}</p>}
+      </div>
+    )}
+
+    <div class="comparison__column-labels">
+      <span class="comparison__label comparison__label--before">{beforeLabel}</span>
+      <span class="comparison__label-spacer" aria-hidden="true"></span>
+      <span class="comparison__label comparison__label--after">{afterLabel}</span>
+    </div>
+
+    <div class="comparison__rows">
+      {rows.map((row, i) => {
+        const beforePath = row.before.icon ? iconPaths[row.before.icon] : null;
+        const afterPath = row.after.icon ? iconPaths[row.after.icon] : null;
+        return (
+          <div class="comparison__row reveal" style={`--stagger: ${i}`}>
+            <div class="comparison__card comparison__card--before comparison__card--animate">
+              <span class="comparison__card-label comparison__card-label--before">{beforeLabel}</span>
+              <div class="comparison__icon comparison__icon--before" aria-hidden="true">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="40" height="40" rx="10" fill="var(--bg-neutral-tertiary)" />
+                  {beforePath ? (
+                    <path d={beforePath} stroke="var(--text-secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  ) : (
+                    <path d="M14 20h12" stroke="var(--text-secondary)" stroke-width="1.5" stroke-linecap="round"/>
+                  )}
+                </svg>
+              </div>
+              <div class="comparison__card-content">
+                <p class="comparison__card-title">{row.before.title}</p>
+                <p class="comparison__card-body">{row.before.body}</p>
+              </div>
+            </div>
+
+            <div class="comparison__arrow comparison__arrow--animate" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12h14m0 0l-4-4m4 4l-4 4" stroke="var(--text-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <div class="comparison__card comparison__card--after comparison__card--animate">
+              <span class="comparison__card-label comparison__card-label--after">{afterLabel}</span>
+              <div class="comparison__icon comparison__icon--after" aria-hidden="true">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="40" height="40" rx="10" fill="var(--bg-brand-tertiary)" />
+                  {afterPath ? (
+                    <path d={afterPath} stroke="var(--text-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  ) : (
+                    <path d="M14 20h12M20 14v12" stroke="var(--text-brand)" stroke-width="1.5" stroke-linecap="round"/>
+                  )}
+                </svg>
+              </div>
+              <div class="comparison__card-content">
+                <p class="comparison__card-title">{row.after.title}</p>
+                <p class="comparison__card-body">{row.after.body}</p>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .comparison {
+    background-color: var(--bg-default);
+    padding-block: clamp(var(--space-1200), 8vw, var(--space-2400));
+  }
+
+  .comparison__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+    margin-bottom: var(--space-1200);
+  }
+
+  .comparison__heading {
+    font-family: var(--font-sans);
+    font-size: var(--size-07);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .comparison__subheading {
+    font-family: var(--font-sans);
+    font-size: var(--size-05);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .comparison__column-labels {
+    display: flex;
+    align-items: center;
+    gap: var(--space-600);
+    margin-bottom: var(--space-800);
+  }
+
+  .comparison__label {
+    flex: 1;
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-normal);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .comparison__label--before {
+    color: var(--text-secondary);
+  }
+
+  .comparison__label--after {
+    color: var(--text-brand);
+    font-weight: var(--weight-bold);
+  }
+
+  .comparison__label-spacer {
+    width: 32px;
+    flex-shrink: 0;
+  }
+
+  .comparison__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+  }
+
+  .comparison__row {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-600);
+  }
+
+  .comparison__card {
+    flex: 1;
+    display: flex;
+    gap: var(--space-400);
+    align-items: flex-start;
+    padding: var(--space-600);
+    border-radius: var(--radius-200);
+    border: var(--stroke-border) solid var(--border-default);
+  }
+
+  .comparison__card--before {
+    background-color: var(--bg-default);
+    border-color: transparent;
+  }
+
+  .comparison__card--after {
+    background-color: var(--bg-default);
+    border-color: transparent;
+    box-shadow: 0 2px 12px rgba(16, 16, 102, 0.10);
+  }
+
+  .comparison__icon {
+    flex-shrink: 0;
+  }
+
+  .comparison__card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+    min-width: 0;
+  }
+
+  .comparison__card-title {
+    font-family: var(--font-sans);
+    font-size: var(--size-04);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .comparison__card-body {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .comparison__card-label {
+    display: none;
+  }
+
+  .comparison__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  /* Row acts as trigger only — no animation on the row itself */
+  .comparison__row.reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  /* Inner cascade: before card → arrow → after card */
+  .comparison__card--animate {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s var(--ease-out-quart), transform 0.5s var(--ease-out-quart);
+  }
+
+  .comparison__arrow--animate {
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity 0.4s var(--ease-out-quart), transform 0.4s var(--ease-out-quart);
+  }
+
+  .comparison__card--before.comparison__card--animate {
+    transition-delay: calc(var(--stagger, 0) * 150ms);
+  }
+
+  .comparison__arrow--animate {
+    transition-delay: calc(var(--stagger, 0) * 150ms + 150ms);
+  }
+
+  .comparison__card--after.comparison__card--animate {
+    transition-delay: calc(var(--stagger, 0) * 150ms + 300ms);
+  }
+
+  .comparison__row.reveal--visible .comparison__card--animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .comparison__row.reveal--visible .comparison__arrow--animate {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Mobile: stack vertically with arrow pointing down */
+  @media (max-width: 767px) {
+    .comparison__rows {
+      gap: var(--space-1200);
+    }
+
+    .comparison__column-labels {
+      display: none;
+    }
+
+    .comparison__card-label {
+      display: block;
+      font-family: var(--font-sans);
+      font-size: var(--size-02);
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      margin-bottom: var(--space-200);
+      flex-shrink: 0;
+    }
+
+    .comparison__card-label--before {
+      color: var(--text-secondary);
+    }
+
+    .comparison__card-label--after {
+      color: var(--text-brand);
+    }
+
+    .comparison__card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .comparison__row {
+      flex-direction: column;
+      gap: var(--space-300);
+    }
+
+    .comparison__arrow {
+      align-self: center;
+    }
+
+    .comparison__arrow svg {
+      transform: rotate(90deg);
+    }
+  }
+</style>

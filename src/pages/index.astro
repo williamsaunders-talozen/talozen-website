@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import HeroSection from '../components/HeroSection.astro';
+import TestimonialGrid from '../components/TestimonialGrid.astro';
+import DemoEmbed from '../components/DemoEmbed.astro';
+import IconCardGrid from '../components/IconCardGrid.astro';
+import ImpactCalculator from '../components/ImpactCalculator.astro';
+import FeaturePanel from '../components/FeaturePanel.astro';
+import PricingGrid from '../components/PricingGrid.astro';
+import BeforeAfterComparison from '../components/BeforeAfterComparison.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+import { getEntry } from 'astro:content';
+
+const page = await getEntry('pages', 'index');
+if (!page) throw new Error('Content entry "pages/index" not found. Check src/content/pages/index.mdx exists.');
+const { sections } = page.data;
+
+/** Plain text for <title>, matching visible H1 (strip **bold** markers). */
+function headlineToPlainText(headline: string): string {
+  return headline.replace(/\*\*(.+?)\*\*/g, '$1');
+}
+
+const hero = sections.find((s: any) => s.id === 'hero');
+const pageTitle = hero?.headline ? headlineToPlainText(hero.headline) : undefined;
+
+const componentMap: Record<string, any> = {
+  HeroSection,
+  TestimonialGrid,
+  DemoEmbed,
+  IconCardGrid,
+  ImpactCalculator,
+  FeaturePanel,
+  PricingGrid,
+  BeforeAfterComparison,
+  SiteFooter,
+};
+---
+
+<BaseLayout title={pageTitle}>
+  <SiteHeader />
+  <main>
+    {sections.map((section: any) => {
+      const Component = componentMap[section.component];
+      if (!Component) return null;
+      return (
+        <div id={section.id} class:list={{ "defer-section": section.id !== "hero" }}>
+          <Component {...section} />
+        </div>
+      );
+    })}
+  </main>
+</BaseLayout>

@@ -1,0 +1,285 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+const footerLinks = {
+  linkGroups: [
+    {
+      title: "Social",
+      links: [{ label: "LinkedIn", href: "https://www.linkedin.com/company/talozenplatform/" }],
+    },
+    {
+      title: "Support",
+      links: [{ label: "Contact us", href: "/contact" }],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Terms and Conditions", href: "/legal#terms" },
+        { label: "Privacy Policy", href: "/legal#privacy" },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title="Sign Up for Free — Talozen" description="Start using Talozen's free CRM for your real estate agency. Manage agents, properties, owners, and tenants at no cost.">
+  <SiteHeader />
+  <main class="signup-page">
+    <div class="tz-container signup-page__inner">
+
+      <!-- Left: copy + features -->
+      <div class="signup-page__content">
+        <p class="signup-page__eyebrow">Get started</p>
+        <h1 class="signup-page__title">Try for free</h1>
+        <p class="signup-page__subtitle">Start managing your agency with Talozen's free CRM. No monthly fees, no commitment — just pay R75 per application and FICA credit check.</p>
+
+        <ul class="signup-page__features">
+          <li class="signup-page__feature">
+            <svg class="signup-page__check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="var(--border-brand)" stroke-width="1.5"/>
+              <path d="M8 12l3 3 5-5" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Free CRM: Manage agents, properties, owners, sellers, landlords and tenants</span>
+          </li>
+          <li class="signup-page__feature">
+            <svg class="signup-page__check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="var(--border-brand)" stroke-width="1.5"/>
+              <path d="M8 12l3 3 5-5" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Collect credit check fees during tenant applications</span>
+          </li>
+          <li class="signup-page__feature">
+            <svg class="signup-page__check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="var(--border-brand)" stroke-width="1.5"/>
+              <path d="M8 12l3 3 5-5" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Run TPN credit checks from the platform</span>
+          </li>
+          <li class="signup-page__feature">
+            <svg class="signup-page__check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="var(--border-brand)" stroke-width="1.5"/>
+              <path d="M8 12l3 3 5-5" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Renewal management</span>
+          </li>
+          <li class="signup-page__feature">
+            <svg class="signup-page__check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="var(--border-brand)" stroke-width="1.5"/>
+              <path d="M8 12l3 3 5-5" stroke="var(--icon-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Agent performance tracking</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right: sign up form -->
+      <div class="signup-page__form-wrap">
+        <form class="signup-form" name="signup" netlify data-netlify="true" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="signup" />
+          <p class="signup-form__honeypot" aria-hidden="true">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </p>
+
+          <div class="signup-form__row">
+            <div class="signup-form__field">
+              <label class="signup-form__label" for="first-name">First name</label>
+              <input class="signup-form__input" type="text" id="first-name" name="first-name" required placeholder="Jane" />
+            </div>
+            <div class="signup-form__field">
+              <label class="signup-form__label" for="last-name">Last name</label>
+              <input class="signup-form__input" type="text" id="last-name" name="last-name" required placeholder="Smith" />
+            </div>
+          </div>
+
+          <div class="signup-form__field">
+            <label class="signup-form__label" for="agency-name">Agency name</label>
+            <input class="signup-form__input" type="text" id="agency-name" name="agency-name" required placeholder="Apex Properties" />
+          </div>
+
+          <div class="signup-form__row">
+            <div class="signup-form__field">
+              <label class="signup-form__label" for="rental-units">Number of rental units</label>
+              <input class="signup-form__input" type="number" id="rental-units" name="rental-units" min="0" placeholder="e.g. 50" />
+            </div>
+            <div class="signup-form__field">
+              <label class="signup-form__label" for="sales-units">Number of sales units</label>
+              <input class="signup-form__input" type="number" id="sales-units" name="sales-units" min="0" placeholder="e.g. 20" />
+            </div>
+          </div>
+
+          <div class="signup-form__row">
+            <div class="signup-form__field">
+              <label class="signup-form__label" for="phone">Phone number</label>
+              <input class="signup-form__input" type="tel" id="phone" name="phone" placeholder="+27 82 000 0000" />
+            </div>
+            <div class="signup-form__field">
+              <label class="signup-form__label" for="email">Email address</label>
+              <input class="signup-form__input" type="email" id="email" name="email" required placeholder="jane@apexproperties.co.za" />
+            </div>
+          </div>
+
+          <button type="submit" class="tz-btn tz-btn--primary signup-form__submit">Try for free</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+  <SiteFooter {...footerLinks} />
+</BaseLayout>
+
+<style>
+  .signup-page {
+    padding-top: 40px;
+    background-color: var(--bg-secondary);
+  }
+
+  .signup-page__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: clamp(var(--space-1200), 6vw, var(--space-2400));
+    padding-top: clamp(var(--space-800), 4vw, var(--space-1200));
+    padding-bottom: clamp(96px, 14vw, 200px);
+    align-items: stretch;
+  }
+
+  .signup-page__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .signup-page__eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    font-weight: var(--weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-brand);
+    margin: 0 0 var(--space-400);
+  }
+
+  .signup-page__title {
+    font-family: var(--font-sans);
+    font-size: clamp(var(--size-07), 3.5vw, var(--size-08));
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+    margin: 0 0 var(--space-600);
+  }
+
+  .signup-page__subtitle {
+    font-family: var(--font-sans);
+    font-size: var(--size-04);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-1200);
+  }
+
+  .signup-page__features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-400);
+    margin-top: auto;
+  }
+
+  .signup-page__feature {
+    display: flex;
+    align-items: center;
+    gap: var(--space-400);
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--text-default);
+  }
+
+  .signup-page__check {
+    flex-shrink: 0;
+  }
+
+  /* ── Form ── */
+  .signup-page__form-wrap {
+    background: var(--bg-default);
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-400);
+    padding: clamp(var(--space-800), 4vw, var(--space-1200));
+    box-shadow: var(--shadow-md);
+  }
+
+  .signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+  }
+
+  .signup-form__honeypot {
+    display: none;
+  }
+
+  .signup-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-600);
+  }
+
+  .signup-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  .signup-form__label {
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+  }
+
+  .signup-form__input {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    color: var(--text-default);
+    background: var(--bg-default);
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-200);
+    padding: var(--space-300) var(--space-400);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+  }
+
+  .signup-form__input::placeholder {
+    color: var(--text-placeholder, var(--text-secondary));
+  }
+
+  .signup-form__input:focus {
+    border-color: var(--border-brand);
+    box-shadow: 0 0 0 3px rgba(39, 39, 255, 0.1);
+  }
+
+  .signup-form__submit {
+    align-self: flex-start;
+    cursor: pointer;
+    background: var(--bg-brand);
+    border-color: var(--bg-brand);
+    color: #fff;
+  }
+
+  @media (max-width: 900px) {
+    .signup-page__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .signup-form__row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

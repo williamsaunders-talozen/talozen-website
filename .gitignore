@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Claude Code / AI tooling
+.agents/
+.claude/
+skills-lock.json
+.mcp.json
+
+# Netlify (not deploying via Netlify)
+.netlify/
+node_modules

@@ -1,0 +1,142 @@
+---
+interface Card {
+  title: string;
+  body: string;
+  icon?: string;
+}
+
+interface Props {
+  headline: string;
+  subheadline?: string;
+  cards: Card[];
+  variant?: "default" | "muted";
+  tone?: "default" | "warning" | "positive";
+}
+
+import { iconPaths } from '../utils/icon-paths';
+
+const { headline, subheadline, cards, variant = "default", tone = "default" } = Astro.props;
+
+const toneColors: Record<string, { bg: string; stroke: string }> = {
+  default:  { bg: "var(--bg-brand-tertiary)",    stroke: "var(--icon-brand)" },
+  warning:  { bg: "var(--bg-warning-tertiary)",   stroke: "var(--icon-warning)" },
+  positive: { bg: "var(--bg-positive-tertiary)",  stroke: "var(--icon-positive)" },
+};
+
+const colors = toneColors[tone] || toneColors.default;
+---
+
+<section class:list={["icon-grid", { "icon-grid--muted": variant === "muted" }]}>
+  <div class="tz-container">
+    <div class="icon-grid__heading-block">
+      <h2 class="icon-grid__heading">{headline}</h2>
+      {subheadline && <p class="icon-grid__subheading">{subheadline}</p>}
+    </div>
+    <div class="icon-grid__cards">
+      {cards.map((card) => {
+        const path = card.icon ? iconPaths[card.icon] : null;
+        return (
+          <div class="icon-card">
+            <div class="icon-card__icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="40" height="40" rx="10" fill={colors.bg} />
+                {path ? (
+                  <path d={path} stroke={colors.stroke} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                ) : (
+                  <path d="M14 20h12M20 14v12" stroke={colors.stroke} stroke-width="1.5" stroke-linecap="round"/>
+                )}
+              </svg>
+            </div>
+            <div class="icon-card__body">
+              <h3 class="icon-card__title">{card.title}</h3>
+              <p class="icon-card__text">{card.body}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .icon-grid {
+    background-color: var(--bg-default);
+    padding-block: clamp(var(--space-1200), 8vw, var(--space-2400));
+  }
+
+  .icon-grid--muted {
+    background-color: var(--bg-secondary);
+  }
+
+  .icon-grid__heading-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+    margin-bottom: var(--space-1200);
+  }
+
+  .icon-grid__heading {
+    font-family: var(--font-sans);
+    font-size: var(--size-07);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .icon-grid__subheading {
+    font-family: var(--font-sans);
+    font-size: var(--size-05);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .icon-grid__cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1600);
+  }
+
+  .icon-card {
+    flex: 1 0 240px;
+    display: flex;
+    gap: var(--space-600);
+    align-items: flex-start;
+  }
+
+  .icon-card__icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+  }
+
+  .icon-card__body {
+    flex: 1;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  .icon-card__title {
+    font-family: var(--font-sans);
+    font-size: var(--size-05);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .icon-card__text {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+</style>

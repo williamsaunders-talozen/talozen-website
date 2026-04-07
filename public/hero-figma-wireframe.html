@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hero — Wireframe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Closely follows Figma wireframe layout (node Wireframe - 3): header, stepper, list + chat */
+    :root {
+      --wf-bg: #e8e8e8;
+      --wf-white: #ffffff;
+      --wf-f4: #f4f4f4;
+      --wf-f0: #f0f0f0;
+      --wf-f1: #f1f1f1;
+      --wf-border: #e0e0e0;
+      --wf-black: #000000;
+      --wf-text: #000000;
+      --wf-font: "Inter", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(0.75rem, 3vw, 2rem);
+      background: var(--wf-bg);
+      font-family: var(--wf-font);
+      color: var(--wf-text);
+    }
+
+    .hero-wrap {
+      width: min(720px, 100%);
+      aspect-ratio: 4 / 3;
+      position: relative;
+      background: var(--wf-white);
+      border: 1px solid var(--wf-border);
+      border-radius: 2px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      font-size: clamp(9px, 1.35vw, 12px);
+    }
+
+    /* —— Top bar (matches 66:1396) —— */
+    .wf-header {
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto auto;
+      align-items: center;
+      gap: 0.35rem 0.75rem;
+      min-height: clamp(52px, 11vw, 68px);
+      padding: clamp(6px, 1.2vw, 9px) clamp(10px, 2vw, 25px);
+      border-bottom: 1px solid var(--wf-black);
+      background: var(--wf-white);
+    }
+
+    .wf-header-badge {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: start;
+      background: var(--wf-f4);
+      padding: 0.35rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.72em;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+    }
+
+    .wf-header-avatar {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: center;
+      width: clamp(36px, 8vw, 49px);
+      height: clamp(36px, 8vw, 49px);
+      border-radius: 50%;
+      background: var(--wf-f0);
+      border: 1px solid var(--wf-border);
+    }
+
+    .wf-header-address {
+      grid-column: 1;
+      grid-row: 2;
+      margin: 0;
+      font-size: 1.05em;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    /* —— Body: stepper + list | chat —— */
+    .wf-body {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr minmax(140px, 32%);
+      grid-template-rows: auto 1fr;
+      gap: clamp(0.4rem, 1.2vw, 0.65rem) clamp(0.5rem, 1.5vw, 0.85rem);
+      padding: 0 clamp(8px, 1.8vw, 18px) clamp(8px, 1.5vw, 14px);
+      align-items: start;
+    }
+
+    @media (max-width: 520px) {
+      .wf-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+      }
+      .wf-chat {
+        grid-column: 1;
+        grid-row: 2;
+        max-width: 100%;
+      }
+      .wf-list-wrap {
+        grid-column: 1;
+        grid-row: 3;
+      }
+    }
+
+    .wf-stepper {
+      grid-column: 1;
+      grid-row: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem 0.25rem;
+      padding-top: clamp(4px, 1vw, 10px);
+    }
+
+    .wf-step {
+      background: var(--wf-f0);
+      border: 1px solid transparent;
+      border-radius: 20px;
+      padding: 0.45rem 0.65rem;
+      font-size: 1em;
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .wf-step.is-active {
+      font-weight: 700;
+      border-color: var(--wf-black);
+      background: var(--wf-f0);
+    }
+
+    .wf-step-arrow {
+      width: clamp(22px, 5vw, 38px);
+      height: clamp(12px, 2.5vw, 20px);
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+
+    /* Chat panel (66:1463) — right column, full height beside stepper + list */
+    .wf-chat {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--wf-black);
+      background: var(--wf-white);
+      padding: clamp(8px, 1.5vw, 12px) clamp(8px, 1.8vw, 14px);
+      min-height: 0;
+    }
+
+    .wf-chat-head {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-bottom: clamp(0.5rem, 1.5vw, 0.85rem);
+    }
+
+    .wf-chat-head svg {
+      width: 1.35em;
+      height: 1.35em;
+      flex-shrink: 0;
+    }
+
+    .wf-chat-head h2 {
+      margin: 0;
+      font-size: 1.2em;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .wf-msg {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      margin-bottom: clamp(0.65rem, 1.5vw, 0.85rem);
+    }
+
+    .wf-msg:last-child {
+      margin-bottom: 0;
+    }
+
+    .wf-msg-avatar {
+      width: clamp(36px, 7vw, 49px);
+      height: clamp(36px, 7vw, 49px);
+      border-radius: 50%;
+      background: var(--wf-f0);
+      border: 1px solid var(--wf-border);
+      flex-shrink: 0;
+    }
+
+    .wf-msg-body {
+      flex: 1;
+      min-width: 0;
+      font-size: 1em;
+      line-height: 1.2;
+    }
+
+    .wf-msg-body strong {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .wf-msg-body p {
+      margin: 0;
+      font-weight: 400;
+    }
+
+    /* Main list (66:1314) */
+    .wf-list-wrap {
+      grid-column: 1;
+      grid-row: 2;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .wf-list-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.45em;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .wf-rows {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(6px, 1.2vw, 10px);
+      padding-right: 2px;
+    }
+
+    /* Application row — matches selected frame (e.g. 66:1890): left cluster, mid stack, button */
+    .wf-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      column-gap: 44px;
+      align-items: center;
+      padding: 10px 9px;
+      border: 1px solid var(--wf-border);
+      background: var(--wf-white);
+      flex-shrink: 0;
+    }
+
+    .wf-row-left {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .wf-sprite {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .wf-row-avatar {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .wf-row-avatar svg {
+      display: block;
+      width: 28px;
+      height: 28px;
+    }
+
+    .wf-row-name {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .wf-row-mid {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .wf-row-received {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--wf-text);
+      white-space: nowrap;
+    }
+
+    .wf-fica {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .wf-fica-icon {
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .wf-row-btn {
+      background: var(--wf-f1);
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.2;
+      cursor: default;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-wrap" role="img" aria-label="Wireframe: lease approvals dashboard">
+    <svg class="wf-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+      <defs>
+        <symbol id="wf-avatar" viewBox="0 0 28 28">
+          <circle cx="14" cy="14" r="13.5" fill="#f0f0f0" stroke="#e0e0e0" stroke-width="1" />
+        </symbol>
+        <symbol id="wf-tick" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+          <path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M7.5 12.5l2.8 2.8L16.5 9" />
+        </symbol>
+      </defs>
+    </svg>
+    <header class="wf-header">
+      <span class="wf-header-badge">RENTAL PROPERTY</span>
+      <div class="wf-header-avatar" aria-hidden="true"></div>
+      <p class="wf-header-address">245 West avenue, Seapoint, Cape Town</p>
+    </header>
+
+    <div class="wf-body">
+      <nav class="wf-stepper" aria-label="Workflow steps">
+        <span class="wf-step">Applications</span>
+        <svg class="wf-step-arrow" viewBox="0 0 38 20" fill="none" aria-hidden="true">
+          <path d="M8 4h22l-6 6 6 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span class="wf-step is-active">Approvals</span>
+        <svg class="wf-step-arrow" viewBox="0 0 38 20" fill="none" aria-hidden="true">
+          <path d="M8 4h22l-6 6 6 6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span class="wf-step">Generate and sign</span>
+      </nav>
+
+      <aside class="wf-chat">
+        <div class="wf-chat-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <h2>Chat</h2>
+        </div>
+        <div class="wf-msg">
+          <div class="wf-msg-avatar" aria-hidden="true"></div>
+          <div class="wf-msg-body">
+            <strong>Admin name</strong>
+            <p>Let’s run credit checks and select the best tenant</p>
+          </div>
+        </div>
+        <div class="wf-msg">
+          <div class="wf-msg-avatar" aria-hidden="true"></div>
+          <div class="wf-msg-body">
+            <strong>Agent name</strong>
+            <p>OK sure, will do!</p>
+          </div>
+        </div>
+      </aside>
+
+      <div class="wf-list-wrap">
+        <h1 class="wf-list-title">25 Lease applications received</h1>
+        <div class="wf-rows">
+          <div class="wf-row">
+            <div class="wf-row-left">
+              <div class="wf-row-avatar" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><use href="#wf-avatar" /></svg>
+              </div>
+              <p class="wf-row-name">Jamie Fox</p>
+            </div>
+            <div class="wf-row-mid">
+              <p class="wf-row-received">R300.00 received</p>
+              <div class="wf-fica">
+                <svg class="wf-fica-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><use href="#wf-tick" /></svg>
+                <span>FICA complete</span>
+              </div>
+            </div>
+            <button type="button" class="wf-row-btn">Run credit check</button>
+          </div>
+          <div class="wf-row">
+            <div class="wf-row-left">
+              <div class="wf-row-avatar" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><use href="#wf-avatar" /></svg>
+              </div>
+              <p class="wf-row-name">Sarah Chen</p>
+            </div>
+            <div class="wf-row-mid">
+              <p class="wf-row-received">R300.00 received</p>
+              <div class="wf-fica">
+                <svg class="wf-fica-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><use href="#wf-tick" /></svg>
+                <span>FICA complete</span>
+              </div>
+            </div>
+            <button type="button" class="wf-row-btn">Run credit check</button>
+          </div>
+          <div class="wf-row">
+            <div class="wf-row-left">
+              <div class="wf-row-avatar" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><use href="#wf-avatar" /></svg>
+              </div>
+              <p class="wf-row-name">Thabo Molefe</p>
+            </div>
+            <div class="wf-row-mid">
+              <p class="wf-row-received">R300.00 received</p>
+              <div class="wf-fica">
+                <svg class="wf-fica-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><use href="#wf-tick" /></svg>
+                <span>FICA complete</span>
+              </div>
+            </div>
+            <button type="button" class="wf-row-btn">Run credit check</button>
+          </div>
+          <div class="wf-row">
+            <div class="wf-row-left">
+              <div class="wf-row-avatar" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><use href="#wf-avatar" /></svg>
+              </div>
+              <p class="wf-row-name">Nina Patel</p>
+            </div>
+            <div class="wf-row-mid">
+              <p class="wf-row-received">R300.00 received</p>
+              <div class="wf-fica">
+                <svg class="wf-fica-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><use href="#wf-tick" /></svg>
+                <span>FICA complete</span>
+              </div>
+            </div>
+            <button type="button" class="wf-row-btn">Run credit check</button>
+          </div>
+          <div class="wf-row">
+            <div class="wf-row-left">
+              <div class="wf-row-avatar" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><use href="#wf-avatar" /></svg>
+              </div>
+              <p class="wf-row-name">David Okonkwo</p>
+            </div>
+            <div class="wf-row-mid">
+              <p class="wf-row-received">R300.00 received</p>
+              <div class="wf-fica">
+                <svg class="wf-fica-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><use href="#wf-tick" /></svg>
+                <span>FICA complete</span>
+              </div>
+            </div>
+            <button type="button" class="wf-row-btn">Run credit check</button>
+          </div>
+          <div class="wf-row">
+            <div class="wf-row-left">
+              <div class="wf-row-avatar" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"><use href="#wf-avatar" /></svg>
+              </div>
+              <p class="wf-row-name">Amahle Dube</p>
+            </div>
+            <div class="wf-row-mid">
+              <p class="wf-row-received">R300.00 received</p>
+              <div class="wf-fica">
+                <svg class="wf-fica-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><use href="#wf-tick" /></svg>
+                <span>FICA complete</span>
+              </div>
+            </div>
+            <button type="button" class="wf-row-btn">Run credit check</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

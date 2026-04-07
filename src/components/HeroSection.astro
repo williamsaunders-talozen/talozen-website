@@ -1,0 +1,850 @@
+---
+interface Logo {
+  name: string;
+  image?: string;
+}
+
+interface Props {
+  headline: string;
+  subheadline: string;
+  cta: string;
+  ctaHref?: string;
+  ctaSecondary?: string;
+  image?: string;
+  logos?: Logo[];
+}
+
+const { headline, subheadline, cta, ctaHref, ctaSecondary, logos = [] } = Astro.props;
+
+const applicants: { name: string; photo: string; credit: 'button' | 'processing' | 'complete' }[] = [
+  { name: 'Davia Markon',    photo: 'https://i.pravatar.cc/56?img=32', credit: 'button' },
+  { name: 'Nomsa Khumalo',   photo: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=56&h=56&fit=crop&crop=face', credit: 'processing' },
+  { name: 'Sarah Smit',      photo: 'https://i.pravatar.cc/56?img=5',  credit: 'complete' },
+  { name: 'James Wright',    photo: 'https://i.pravatar.cc/56?img=11', credit: 'processing' },
+  { name: 'Thabo Molefe',    photo: 'https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=56&h=56&fit=crop&crop=face', credit: 'button' },
+  { name: 'Nina Patel',      photo: 'https://images.unsplash.com/photo-1611432579699-484f7990b127?w=56&h=56&fit=crop&crop=face', credit: 'complete' },
+  { name: 'David Pretorius',  photo: 'https://i.pravatar.cc/56?img=53', credit: 'complete' },
+  { name: 'Amahle Dube',     photo: 'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?w=56&h=56&fit=crop&crop=face', credit: 'processing' },
+  { name: 'Lerato Mokoena',  photo: 'https://i.pravatar.cc/56?img=26', credit: 'complete' },
+  { name: 'Benny Baden',     photo: 'https://i.pravatar.cc/56?img=59', credit: 'processing' },
+  { name: 'Zinhle Nkosi',    photo: 'https://i.pravatar.cc/56?img=9',  credit: 'complete' },
+  { name: 'Pieter van Wyk',  photo: 'https://i.pravatar.cc/56?img=60', credit: 'processing' },
+];
+---
+
+<section class="hero" id="hero-section">
+  <div class="tz-container hero__inner">
+    <div class="hero__content hero__parallax-slow">
+      <div class="hero__text">
+        <h1 class="hero__headline hero-enter" style="--stagger: 0" set:html={headline.replace(/\*\*(.+?)\*\*/g, '<em>$1</em>')} />
+        <p class="hero__subheadline hero-enter" style="--stagger: 1" set:html={subheadline.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br />')} />
+      </div>
+      <div class="hero__actions hero-enter" style="--stagger: 2">
+        <a 
+          href={ctaHref ?? "/signup"} 
+          target={ctaHref?.startsWith("http") ? "_blank" : undefined}
+          rel={ctaHref?.startsWith("http") ? "noopener noreferrer" : undefined}
+          class="tz-btn tz-btn--primary"
+        >
+          {cta}
+        </a>
+      </div>
+    </div>
+    <div class="hero__right hero-enter hero__parallax-fast" style="--stagger: 1">
+      <div class="hero-ipad">
+        <div class="hero-ipad__bezel">
+          <div class="hero-ipad__dots">
+            <span class="hero-ipad__dot hero-ipad__dot--red"></span>
+            <span class="hero-ipad__dot hero-ipad__dot--yellow"></span>
+            <span class="hero-ipad__dot hero-ipad__dot--green"></span>
+          </div>
+          <div class="hero-ipad__urlbar">
+            <span class="hero-ipad__url">www.talozen.com</span>
+          </div>
+        </div>
+        <div
+          class="hero-preview"
+          role="img"
+          aria-label="Product wireframe preview: property address, approvals step, and lease application queue with FICA status"
+        >
+          <div class="hero-preview__frame">
+          <div class="hero-preview__wf-property-bar">
+            <div class="hero-preview__wf-header-text">
+              <p class="hero-preview__wf-address">245 West Avenue, Sea Point, Cape Town</p>
+              <p class="hero-preview__wf-address-sub">Sea Point Place · 166 units</p>
+            </div>
+            <img
+              class="hero-preview__wf-property-img"
+              src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=120&h=80&fit=crop"
+              alt="Property exterior"
+              width="120"
+              height="80"
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+            />
+          </div>
+
+          <div class="hero-preview__wf-main">
+            <div class="hero-preview__wf-title-row">
+              <h2 class="hero-preview__wf-title">25 Rental applications</h2>
+              <button type="button" class="hero-preview__wf-next" tabindex="-1">
+                <svg class="hero-preview__wf-next-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Next: Generate lease
+              </button>
+            </div>
+            <ul class="hero-preview__wf-list">
+              {applicants.map((person, i) => (
+                <li class="hero-preview__wf-card" style={`--card-i: ${i}`}>
+                  <img class="hero-preview__wf-avatar" src={person.photo} alt="" width="56" height="56" loading="lazy" decoding="async" fetchpriority="low" />
+                  <span class="hero-preview__wf-name">{person.name}</span>
+                  <span class="hero-preview__wf-pay">R300.00 paid</span>
+                  <div class="hero-preview__wf-fica">
+                    <svg class="hero-preview__wf-check" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M20 6L9 17l-5-5"
+                      />
+                    </svg>
+                    <span>FICA</span>
+                  </div>
+                  {person.credit === 'button' && (
+                    <button type="button" class="hero-preview__wf-action" tabindex="-1">Run credit check</button>
+                  )}
+                  {person.credit === 'processing' && (
+                    <span class="hero-preview__wf-status hero-preview__wf-status--processing">Processing</span>
+                  )}
+                  {person.credit === 'complete' && (
+                    <span class="hero-preview__wf-status hero-preview__wf-status--complete">Credit rating: A</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  {logos.length > 0 && (
+    <div class="tz-container">
+      <div class="hero__logos hero-enter" style="--stagger: 3">
+        <span class="hero__logos-label">Trusted by Industry Leaders</span>
+        <div class="hero__logos-row">
+          {logos.map((logo) => (
+            logo.image
+              ? <img src={logo.image} alt={logo.name} class="hero__logo-img" width="120" height="36" loading="lazy" />
+              : <span class="hero__logo-placeholder">{logo.name}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+</section>
+
+<style>
+  .hero {
+    background-color: var(--bg-default);
+    padding-top: calc(clamp(var(--space-1600), 8.5vw, var(--space-2400)) - 10px);
+    padding-bottom: calc(clamp(var(--space-1600), 8.5vw, var(--space-2400)) + 30px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @keyframes hero-parallax-slow {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-30px);
+      }
+    }
+
+    @keyframes hero-parallax-fast {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-60px);
+      }
+    }
+
+    .hero__parallax-slow {
+      animation: hero-parallax-slow linear forwards;
+      animation-timeline: scroll();
+      animation-range: 0vh 80vh;
+    }
+
+    .hero__parallax-fast {
+      animation: hero-parallax-fast linear forwards;
+      animation-timeline: scroll();
+      animation-range: 0vh 80vh;
+    }
+  }
+
+  .hero__inner {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-1600);
+    min-height: 435px;
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-800);
+    flex: 2;
+    min-width: 0;
+  }
+
+  .hero__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-400);
+  }
+
+  .hero__headline {
+    font-family: var(--font-sans);
+    font-size: var(--size-08);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .hero__headline :global(em) {
+    font-style: normal;
+    text-decoration: none;
+    display: inline;
+    color: var(--text-brand);
+  }
+
+  .hero__subheadline {
+    font-family: var(--font-sans);
+    font-size: var(--size-04);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: 36ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-400);
+    flex-wrap: wrap;
+  }
+
+  .hero__actions .tz-btn--primary {
+    background: var(--bg-brand);
+    border-color: var(--bg-brand);
+    color: #fff;
+  }
+
+  .hero__actions .tz-btn--primary:hover {
+    background: var(--bg-brand-hover, var(--bg-brand));
+    border-color: var(--bg-brand-hover, var(--bg-brand));
+  }
+
+  .hero__right {
+    flex: 2.5;
+    min-width: 0;
+    position: relative;
+  }
+
+  /* ── iPad shell ── */
+  .hero-ipad {
+    --shell-radius: clamp(16px, 3cqi, 24px);
+    --shell-padding: clamp(3px, 0.5cqi, 5px);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--shell-radius);
+    background: #2e2e2e;
+    padding: var(--shell-padding);
+    box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255,255,255,0.08) inset;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .hero-ipad__bezel {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1.2cqi, 10px);
+    padding: clamp(5px, 1cqi, 9px) clamp(8px, 1.5cqi, 14px);
+  }
+
+  .hero-ipad__dots {
+    display: flex;
+    align-items: center;
+    gap: clamp(4px, 0.8cqi, 6px);
+    flex-shrink: 0;
+  }
+
+  .hero-ipad__dot {
+    display: block;
+    width: clamp(7px, 1.4cqi, 11px);
+    height: clamp(7px, 1.4cqi, 11px);
+    border-radius: 50%;
+  }
+
+  .hero-ipad__dot--red    { background: #ff5f57; }
+  .hero-ipad__dot--yellow { background: #febc2e; }
+  .hero-ipad__dot--green  { background: #28c840; }
+
+  .hero-ipad__urlbar {
+    flex: 1;
+    min-width: 0;
+    background: #3d3d3d;
+    border-radius: clamp(4px, 0.8cqi, 6px);
+    padding: clamp(3px, 0.6cqi, 5px) clamp(8px, 1.5cqi, 12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-ipad__url {
+    font-family: var(--font-sans);
+    font-size: clamp(0.6rem, 1.3cqi, 0.75rem);
+    color: #a0a0a0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+  }
+
+  .hero-preview__wf-property-img {
+    flex-shrink: 0;
+    width: clamp(60px, 12cqi, 100px);
+    height: clamp(40px, 8cqi, 68px);
+    object-fit: cover;
+    border-radius: var(--radius-200);
+    border: var(--stroke-border) solid var(--border-default);
+  }
+
+  /* Wireframe-3 layout + Talozen tokens — 4:3 product preview */
+  .hero-preview {
+    --wf-line-strong: var(--text-default);
+    --wf-line-soft: var(--border-default);
+    --wf-muted-fill: var(--bg-secondary);
+    --wf-pill-fill: rgba(0, 0, 0, 0.04);
+    --wf-surface: var(--bg-default);
+
+    font-family: var(--font-sans);
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    border-radius: calc(var(--shell-radius) - var(--shell-padding));
+    overflow: hidden;
+    border: none;
+    background: var(--wf-surface);
+    pointer-events: none;
+    container-type: inline-size;
+  }
+
+  .hero-preview__frame {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: auto;
+  }
+
+  .hero-preview__wf-header-text {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1px, 0.4cqi, 3px);
+    min-width: 0;
+    flex: 1;
+  }
+
+  .hero-preview__wf-listed {
+    flex-shrink: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(0.65rem, 1.8cqi, 0.875rem);
+    font-weight: var(--weight-medium);
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-200);
+    padding: clamp(4px, 0.8cqi, 8px) clamp(8px, 1.5cqi, 14px);
+    white-space: nowrap;
+  }
+
+  .hero-preview__wf-address {
+    margin: 0;
+    font-size: clamp(0.85rem, 2.4cqi, var(--size-05));
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+  }
+
+  .hero-preview__wf-address-sub {
+    margin: 0;
+    font-size: clamp(0.6rem, 1.6cqi, 0.8rem);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    color: var(--text-secondary);
+  }
+
+  .hero-preview__wf-property-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 1.5cqi, 14px);
+    padding: var(--space-300) var(--space-400);
+    border-bottom: var(--stroke-border) solid var(--border-default);
+  }
+
+  .hero-preview__wf-main {
+    flex: 1;
+    min-height: 0;
+    padding: var(--space-400) var(--space-400) var(--space-600);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+    overflow: hidden;
+    background: var(--bg-secondary);
+  }
+
+  .hero-preview__wf-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(6px, 1.5cqi, 12px);
+    flex-shrink: 0;
+    width: 100%;
+  }
+
+  .hero-preview__wf-title {
+    margin: 0;
+    font-size: clamp(0.75rem, 2cqi, var(--size-04));
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+  }
+
+  .hero-preview__wf-next {
+    flex-shrink: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(0.65rem, 1.8cqi, 0.875rem);
+    font-weight: var(--weight-medium);
+    color: var(--text-secondary);
+    background: var(--bg-default);
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-200);
+    padding: clamp(4px, 0.8cqi, 8px) clamp(8px, 1.5cqi, 14px);
+    cursor: default;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(4px, 0.6cqi, 6px);
+  }
+
+  .hero-preview__wf-next-icon {
+    flex-shrink: 0;
+    width: clamp(12px, 2cqi, 16px);
+    height: clamp(12px, 2cqi, 16px);
+  }
+
+  .hero-preview__wf-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+
+  .hero-preview__wf-card {
+    display: grid;
+    grid-template-columns: clamp(24px, 5.5cqi, 36px) 1fr 1fr 1fr minmax(0, 1fr);
+    column-gap: clamp(8px, 2cqi, 18px);
+    align-items: center;
+    padding: clamp(8px, 1.5cqi, 14px) clamp(10px, 2cqi, 16px);
+    border: var(--stroke-border) solid var(--wf-line-soft);
+    border-radius: var(--radius-200);
+    background: var(--wf-surface);
+    flex-shrink: 0;
+    min-height: 0;
+    opacity: 0;
+    transform: translateX(-24px);
+    animation: card-slide-in 0.5s ease-out forwards;
+    animation-delay: calc(var(--card-i) * 80ms + 600ms);
+  }
+
+  .hero-preview__wf-avatar {
+    grid-column: 1;
+    width: clamp(24px, 5.5cqi, 36px);
+    height: clamp(24px, 5.5cqi, 36px);
+    border-radius: var(--radius-full);
+    background: var(--wf-muted-fill);
+    border: var(--stroke-border) solid var(--wf-line-soft);
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-preview__wf-name {
+    grid-column: 2;
+    min-width: 0;
+    font-size: clamp(0.75rem, 2.2cqi, 1.1rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    color: var(--text-default);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+  }
+
+  .hero-preview__wf-pay {
+    grid-column: 3;
+    font-size: clamp(0.75rem, 2.2cqi, 1.1rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    color: var(--text-positive);
+    white-space: nowrap;
+    text-align: left;
+    background: var(--bg-positive-tertiary);
+    padding: clamp(4px, 0.8cqi, 8px) clamp(6px, 1.2cqi, 12px);
+    border-radius: var(--radius-full);
+    justify-self: start;
+  }
+
+  .hero-preview__wf-fica {
+    grid-column: 4;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: clamp(3px, 0.8cqi, 6px);
+    font-size: clamp(0.75rem, 2.2cqi, 1.1rem);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: var(--text-default);
+    white-space: nowrap;
+    text-align: left;
+    transform-origin: left center;
+    transform: scale(1.6);
+    opacity: 0;
+    animation: fica-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-delay: calc(var(--card-i) * 80ms + 900ms);
+  }
+
+  .hero-preview__wf-check {
+    flex-shrink: 0;
+    color: var(--text-positive);
+    width: clamp(14px, 2.8cqi, 20px);
+    height: clamp(14px, 2.8cqi, 20px);
+  }
+
+  .hero-preview__wf-action {
+    grid-column: 5;
+    justify-self: end;
+    min-width: min-content;
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 2.2cqi, 1.1rem);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: var(--text-default);
+    background: var(--bg-brand-tertiary);
+    border: none;
+    border-radius: var(--radius-full);
+    padding: clamp(6px, 1cqi, 10px) clamp(8px, 1.5cqi, 16px);
+    cursor: default;
+    white-space: nowrap;
+  }
+
+  .hero-preview__wf-status {
+    grid-column: 5;
+    justify-self: end;
+    min-width: min-content;
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 2.2cqi, 1.1rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+    padding: clamp(4px, 0.8cqi, 8px) clamp(6px, 1.2cqi, 12px);
+    border-radius: var(--radius-full);
+  }
+
+  .hero-preview__wf-status--processing {
+    background: var(--bg-warning-tertiary);
+    color: var(--text-warning);
+  }
+
+  .hero-preview__wf-status--complete {
+    background: var(--bg-positive-tertiary);
+    color: var(--text-positive);
+  }
+
+  .hero__logos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-600);
+    padding-top: var(--space-1600);
+  }
+
+  .hero__logos-label {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-bold);
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .hero__logos-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-400);
+    flex-wrap: wrap;
+  }
+
+  .hero__logo-img {
+    display: block;
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .hero__logo-placeholder {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-medium);
+    color: var(--text-tertiary);
+    white-space: nowrap;
+  }
+
+  .hero-enter {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: hero-fade-up 0.7s var(--ease-out-quart) forwards;
+    animation-delay: calc(var(--stagger, 0) * 120ms + 100ms);
+  }
+
+  @keyframes hero-fade-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes header-fade-down {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes card-slide-in {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fica-pop {
+    0% {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero__inner {
+      flex-direction: column;
+      gap: var(--space-800);
+    }
+
+    .hero__content {
+      text-align: center;
+      align-items: center;
+      order: 1;
+    }
+
+    .hero__right {
+      order: 2;
+    }
+
+    .hero__headline {
+      font-size: var(--size-07);
+    }
+
+    .hero__subheadline {
+      font-size: var(--size-04);
+      max-width: none;
+    }
+
+    .hero__actions {
+      justify-content: center;
+    }
+
+    .hero__right {
+      flex: none;
+      width: 100%;
+    }
+
+    .hero-ipad {
+      position: relative;
+    }
+
+    .hero-preview {
+      aspect-ratio: auto;
+      height: auto;
+      flex: none;
+    }
+
+    .hero-preview__wf-list {
+      max-height: calc(5 * (28px + var(--space-100)));
+      overflow: hidden;
+    }
+
+    .hero-preview__wf-header {
+      gap: clamp(6px, 3vw, 12px);
+      padding: var(--space-200) var(--space-300);
+    }
+
+    .hero-preview__wf-address {
+      font-size: var(--size-02);
+    }
+
+    .hero-preview__wf-address-sub {
+      font-size: 0.65rem;
+    }
+
+    .hero-preview__wf-main {
+      padding: var(--space-300) var(--space-300) var(--space-200);
+    }
+
+    .hero-preview__wf-title {
+      font-size: var(--size-02);
+    }
+
+    .hero-preview__wf-card {
+      grid-template-columns: 28px 25% 22% 12% 1fr;
+      column-gap: 6px;
+      padding: 6px 10px;
+    }
+
+    .hero-preview__wf-pay,
+    .hero-preview__wf-fica,
+    .hero-preview__wf-action,
+    .hero-preview__wf-status {
+      justify-self: start;
+    }
+
+    .hero-preview__wf-name,
+    .hero-preview__wf-pay,
+    .hero-preview__wf-fica span {
+      font-size: 0.75rem;
+    }
+
+    .hero-preview__wf-check {
+      width: 12px;
+      height: 12px;
+    }
+
+    .hero-preview__wf-action,
+    .hero-preview__wf-status {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+    }
+
+    .hero__logos {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero__logos-row {
+      justify-content: center;
+    }
+  }
+
+  /* Drop pay pill when the row is too narrow so FICA + credit status stay visible */
+  @container (max-width: 360px) {
+    .hero-preview__wf-card {
+      grid-template-columns: 24px 1fr 12% 1fr;
+      column-gap: 6px;
+    }
+
+    .hero-preview__wf-pay {
+      display: none;
+    }
+
+    .hero-preview__wf-fica {
+      grid-column: 3;
+    }
+
+    .hero-preview__wf-action,
+    .hero-preview__wf-status {
+      grid-column: 4;
+    }
+  }
+
+  /* Scroll trigger for hero animations — pause until in view */
+  .hero-preview__wf-header,
+  .hero-preview__wf-card,
+  .hero-preview__wf-fica {
+    animation-play-state: paused;
+  }
+
+  .hero-preview.is-animate .hero-preview__wf-header,
+  .hero-preview.is-animate .hero-preview__wf-card,
+  .hero-preview.is-animate .hero-preview__wf-fica {
+    animation-play-state: running;
+  }
+</style>
+
+<script>
+  function initHeroAnimations() {
+    const preview = document.querySelector('.hero-preview');
+    if (!preview) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          preview.classList.add('is-animate');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    observer.observe(preview);
+  }
+
+  document.addEventListener('DOMContentLoaded', initHeroAnimations);
+  // Also run for Astro transitions
+  document.addEventListener('astro:page-load', initHeroAnimations);
+</script>

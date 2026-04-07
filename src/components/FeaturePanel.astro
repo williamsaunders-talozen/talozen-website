@@ -1,0 +1,2913 @@
+---
+interface Item {
+  title: string;
+  body: string;
+  icon?: string;
+}
+
+interface Props {
+  headline: string;
+  subheadline?: string;
+  items?: Item[];
+  embedUrl?: string;
+  embedTitle?: string;
+  imagePosition?: "left" | "right";
+  background?: "default" | "secondary";
+  mediaType?: "embed" | "wireframe" | "mandate" | "tenant";
+  cta?: string;
+  ctaHref?: string;
+}
+
+const { headline, subheadline, items, embedUrl, embedTitle, imagePosition = "left", background = "default", mediaType = "embed", cta, ctaHref } = Astro.props;
+const reversed = imagePosition === "right";
+
+const iconMap: Record<string, string> = {
+  'Self-Service Onboarding': 'user-plus',
+  'Complex Entity Handling': 'building',
+  'Multi-signature handling': 'pen-tool',
+  '24/7 Application Engine': 'clock',
+  'One-Click Credit Checks': 'shield-check',
+  'Payment-Triggered Contracts': 'credit-card',
+  'Proactive Expiry Tracking': 'calendar',
+  'Controlled Approval Gateways': 'lock',
+  'Frictionless Closing': 'zap',
+  'Real-Time Dashboards': 'bar-chart',
+  'Agent Performance Tracking': 'trending-up',
+  'Compliance Guard Rails': 'shield',
+};
+
+function getIcon(title: string): string {
+  return iconMap[title] || 'check';
+}
+
+const applicants: { name: string; photo: string; credit: 'button' | 'processing' | 'complete' }[] = [
+  { name: 'Davia Markon',    photo: 'https://i.pravatar.cc/56?img=32', credit: 'button' },
+  { name: 'James Wright',    photo: 'https://i.pravatar.cc/56?img=11', credit: 'button' },
+  { name: 'Nomsa Khumalo',   photo: 'https://i.pravatar.cc/56?img=47', credit: 'processing' },
+  { name: 'Sarah Chen',      photo: 'https://i.pravatar.cc/56?img=5',  credit: 'complete' },
+  { name: 'Thabo Molefe',    photo: 'https://i.pravatar.cc/56?img=12', credit: 'processing' },
+  { name: 'Nina Patel',      photo: 'https://i.pravatar.cc/56?img=23', credit: 'complete' },
+  { name: 'David Okonkwo',   photo: 'https://i.pravatar.cc/56?img=53', credit: 'complete' },
+  { name: 'Amahle Dube',     photo: 'https://i.pravatar.cc/56?img=44', credit: 'processing' },
+  { name: 'Lerato Mokoena',  photo: 'https://i.pravatar.cc/56?img=26', credit: 'complete' },
+  { name: 'Benny Baden',     photo: 'https://i.pravatar.cc/56?img=59', credit: 'processing' },
+  { name: 'Zinhle Nkosi',    photo: 'https://i.pravatar.cc/56?img=9',  credit: 'complete' },
+  { name: 'Pieter van Wyk',  photo: 'https://i.pravatar.cc/56?img=60', credit: 'processing' },
+];
+---
+
+<section class:list={["feature-panel", { "feature-panel--secondary": background === "secondary" }]}>
+  <div class="tz-container">
+    <div class:list={["feature-panel__inner", "reveal", { "feature-panel__inner--reversed": reversed }]}>
+      <div class="feature-panel__media">
+        {mediaType === "wireframe" ? (
+          <div class="fp-preview" role="img" aria-label="Product wireframe preview — applications">
+            <div class="fp-preview__frame">
+              <header class="fp-preview__header">
+                <img class="fp-preview__property-img" src="https://images.unsplash.com/photo-1567684014761-b65e2e59b9eb?w=120&h=120&fit=crop&crop=center" alt="" width="120" height="120" loading="lazy" />
+                <div class="fp-preview__header-text">
+                  <p class="fp-preview__address">183 Beach Road, Sea Point, Cape Town</p>
+                  <p class="fp-preview__address-sub">Sea Point Place · 166 units</p>
+                </div>
+              </header>
+              <nav class="fp-preview__steps" aria-label="Workflow">
+                <span class="fp-preview__pill">
+                  <svg class="fp-preview__pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  Applications
+                </span>
+                <span class="fp-preview__arrow" aria-hidden="true">→</span>
+                <span class="fp-preview__pill fp-preview__pill--active">
+                  <svg class="fp-preview__pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  Approvals
+                </span>
+                <span class="fp-preview__arrow" aria-hidden="true">→</span>
+                <span class="fp-preview__pill">
+                  <svg class="fp-preview__pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                  Generate and sign
+                </span>
+              </nav>
+              <div class="fp-preview__main">
+                <h3 class="fp-preview__title">25 Applications received</h3>
+                <ul class="fp-preview__list">
+                  {applicants.map((person, i) => (
+                    <li class="fp-preview__card" style={`--card-i: ${i}`}>
+                      <img class="fp-preview__avatar" src={person.photo} alt="" width="56" height="56" loading="lazy" />
+                      <span class="fp-preview__name">{person.name}</span>
+                      <span class="fp-preview__pay">R300.00 paid</span>
+                      <div class="fp-preview__fica">
+                        <svg class="fp-preview__check" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>
+                        <span>FICA</span>
+                      </div>
+                      {person.credit === 'button' && (
+                        <button type="button" class="fp-preview__action" tabindex="-1">Run credit check</button>
+                      )}
+                      {person.credit === 'processing' && (
+                        <span class="fp-preview__status fp-preview__status--processing">Processing</span>
+                      )}
+                      {person.credit === 'complete' && (
+                        <span class="fp-preview__status fp-preview__status--complete">A rating</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        ) : mediaType === "mandate" ? (
+          <div class="fp-browser-shell">
+            <div class="fp-browser-shell__chrome">
+              <div class="fp-browser-shell__dots">
+                <span class="fp-browser-shell__dot fp-browser-shell__dot--red"></span>
+                <span class="fp-browser-shell__dot fp-browser-shell__dot--yellow"></span>
+                <span class="fp-browser-shell__dot fp-browser-shell__dot--green"></span>
+              </div>
+              <div class="fp-browser-shell__urlbar">
+                <span class="fp-browser-shell__url">www.talozen.com</span>
+              </div>
+            </div>
+          <div class="fp-preview fp-preview--mandate" role="img" aria-label="Product wireframe preview — mandate generation">
+            <div class="fp-preview__frame">
+              <header class="fp-preview__header">
+                <img class="fp-preview__property-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=120&h=120&fit=crop&crop=center" alt="" width="120" height="120" loading="lazy" />
+                <div class="fp-preview__header-text">
+                  <p class="fp-preview__address">8 Benmore Road, Benmore Gardens, Sandton</p>
+                  <p class="fp-preview__address-sub">Mandate</p>
+                </div>
+              </header>
+              <nav class="fp-preview__steps" aria-label="Workflow">
+                <span class="fp-preview__pill">
+                  <svg class="fp-preview__pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  Mandate applications
+                </span>
+                <span class="fp-preview__arrow" aria-hidden="true">→</span>
+                <span class="fp-preview__pill">
+                  <svg class="fp-preview__pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  Approvals
+                </span>
+                <span class="fp-preview__arrow" aria-hidden="true">→</span>
+                <span class="fp-preview__pill fp-preview__pill--active">
+                  <svg class="fp-preview__pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                  Generate and sign
+                </span>
+              </nav>
+              <div class="fp-mandate__body" data-loading>
+                <div class="fp-mandate__loader" aria-hidden="true">
+                  <svg class="fp-mandate__spinner" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="var(--border-default)" stroke-width="2.5"/>
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke="var(--text-brand)" stroke-width="2.5" stroke-linecap="round"/>
+                  </svg>
+                  <span class="fp-mandate__loader-text">Generating mandate…</span>
+                </div>
+                <div class="fp-mandate__doc-wrap">
+                <div class="fp-mandate__doc">
+                  <div class="fp-mandate__doc-inner">
+                    <div class="fp-mandate__doc-logo">
+                      <svg class="fp-mandate__doc-logo-mark" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                        <rect width="32" height="32" rx="7" fill="var(--text-brand)"/>
+                        <path fill="#fff" d="M16 8l10 16H6L16 8z"/>
+                        <path fill="var(--text-brand)" d="M16 13.5L11.2 22h9.6L16 13.5z"/>
+                      </svg>
+                      <span class="fp-mandate__doc-logo-text">Apex Properties</span>
+                    </div>
+                    <h4 class="fp-mandate__doc-heading">SOLE AND EXCLUSIVE RENTAL MANDATE</h4>
+                    <p class="fp-mandate__doc-text">I/We, the undersigned, <strong>Lindiwe Ndlovu</strong> (ID: 870315 **** 08 *), hereinafter referred to as "the Owner", being the registered owner of the property situated at:</p>
+                    <p class="fp-mandate__doc-text"><strong>8 Benmore Road, Benmore Gardens, Sandton, 2010</strong></p>
+                    <p class="fp-mandate__doc-text">do hereby grant sole and exclusive mandate to <strong>Apex Properties</strong>, hereinafter referred to as "the Agent", to let and manage the said property on my/our behalf, subject to the following terms and conditions:</p>
+                    <h5 class="fp-mandate__doc-subheading">1. RENTAL AMOUNT</h5>
+                    <p class="fp-mandate__doc-text">The property shall be let at a monthly rental of <strong data-doc-rental>R18,500.00</strong>, escalating annually by 8% or as otherwise agreed between the parties.</p>
+                    <h5 class="fp-mandate__doc-subheading">2. DURATION OF MANDATE</h5>
+                    <p class="fp-mandate__doc-text">This mandate shall commence on <strong data-doc-date>1 April 2026</strong> and shall remain in force for a period of twelve (12) months, renewable automatically unless cancelled by either party giving sixty (60) days written notice.</p>
+                    <h5 class="fp-mandate__doc-subheading">3. COMMISSION</h5>
+                    <p class="fp-mandate__doc-text">The Agent shall be entitled to a management fee equal to <strong data-doc-fee>10% (excl. VAT)</strong> of the gross monthly rental collected, payable monthly in arrears. A placement fee equal to one month's rental (excl. VAT) shall be due upon securing a new tenant.</p>
+                    <h5 class="fp-mandate__doc-subheading">4. AGENT'S OBLIGATIONS</h5>
+                    <p class="fp-mandate__doc-text">The Agent undertakes to: (a) market the property and procure suitable tenants; (b) conduct credit checks and reference verifications; (c) prepare lease agreements in accordance with the Rental Housing Act 50 of 1999; (d) collect rental and deposit monies, to be held in a trust account in compliance with the Estate Agency Affairs Act 112 of 1976.</p>
+                    <h5 class="fp-mandate__doc-subheading">5. OWNER'S WARRANTIES</h5>
+                    <p class="fp-mandate__doc-text">The Owner warrants that: (a) the property is free of any structural defects that would render it uninhabitable; (b) the property complies with all applicable municipal by-laws and building regulations; (c) the Owner holds valid title to the property and has the authority to enter into this mandate.</p>
+                    <h5 class="fp-mandate__doc-subheading">6. DEPOSIT AND TRUST ACCOUNT</h5>
+                    <p class="fp-mandate__doc-text">All tenant deposits shall be held in an interest-bearing trust account as prescribed by the Rental Housing Act. Interest accrued shall be for the benefit of the tenant unless otherwise agreed in the lease agreement.</p>
+                    <h5 class="fp-mandate__doc-subheading">7. TERMINATION</h5>
+                    <p class="fp-mandate__doc-text">Either party may terminate this mandate by providing sixty (60) days written notice. Upon termination, the Agent shall provide a full account of all monies held and transfer any remaining funds to the Owner within thirty (30) business days.</p>
+                    <div class="fp-mandate__doc-signatures">
+                      <div class="fp-mandate__doc-sig">
+                        <p class="fp-mandate__doc-sig-label">SIGNED BY THE AGENT</p>
+                        <div class="fp-mandate__doc-sig-canvas">
+                          <p class="fp-mandate__doc-sig-ink" data-doc-sig-ink="agent" hidden>Michael Botha</p>
+                          <div class="fp-mandate__doc-sig-line"></div>
+                        </div>
+                        <p class="fp-mandate__doc-sig-name">Michael Botha</p>
+                        <p class="fp-mandate__doc-sig-detail">Apex Properties</p>
+                        <p class="fp-mandate__doc-sig-detail">Date: <span data-doc-sig-date="agent">—</span></p>
+                      </div>
+                      <div class="fp-mandate__doc-sig">
+                        <p class="fp-mandate__doc-sig-label">SIGNED BY THE OWNER</p>
+                        <div class="fp-mandate__doc-sig-canvas">
+                          <p class="fp-mandate__doc-sig-ink" data-doc-sig-ink="owner" hidden>Lindiwe Ndlovu</p>
+                          <div class="fp-mandate__doc-sig-line"></div>
+                        </div>
+                        <p class="fp-mandate__doc-sig-name">Lindiwe Ndlovu</p>
+                        <p class="fp-mandate__doc-sig-detail">Owner</p>
+                        <p class="fp-mandate__doc-sig-detail">Date: <span data-doc-sig-date="owner">—</span></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                <div class="fp-mandate__sidebar">
+                  <h4 class="fp-mandate__sidebar-title">Mandate generation and signing</h4>
+                  <div class="fp-mandate__owner-card">
+                    <div class="fp-mandate__owner-left">
+                      <img class="fp-mandate__owner-avatar" src="https://i.pravatar.cc/56?img=48" alt="" width="56" height="56" loading="lazy" />
+                      <span class="fp-mandate__owner-name">Lindiwe Ndlovu</span>
+                    </div>
+                    <div class="fp-mandate__owner-right">
+                      <span class="fp-mandate__owner-detail">lindiwe@ndlovu.co.za</span>
+                      <span class="fp-mandate__owner-detail">+27 78 654 678</span>
+                    </div>
+                  </div>
+                  <div class="fp-mandate__fields">
+                    <label class="fp-mandate__field">
+                      <span class="fp-mandate__field-label">Rental amount</span>
+                      <input type="text" class="fp-mandate__field-input" data-field-rental value="R18,500.00" />
+                    </label>
+                    <label class="fp-mandate__field">
+                      <span class="fp-mandate__field-label">Start date</span>
+                      <input type="text" class="fp-mandate__field-input" data-field-date value="1 April 2026" />
+                    </label>
+                    <label class="fp-mandate__field">
+                      <span class="fp-mandate__field-label">Management fee</span>
+                      <input type="text" class="fp-mandate__field-input" data-field-fee value="10%" />
+                    </label>
+                  </div>
+                  <button type="button" class="fp-mandate__btn fp-mandate__btn--regen" data-regenerate tabindex="-1">Regenerate mandate</button>
+                  <div class="fp-mandate__bottom">
+                    <div class="fp-mandate__sending" data-sending>
+                      <svg class="fp-mandate__sending-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                        <path d="M12 18v-6"/><path d="M9 15l3-3 3 3"/>
+                      </svg>
+                      <span class="fp-mandate__sending-text">Sending mandate…</span>
+                    </div>
+                    <div class="fp-signature" data-signature-panel>
+                     <div class="fp-signature__content">
+                      <h4 class="fp-signature__heading">Mandate sent for signature</h4>
+                      <div class="fp-signature__row">
+                        <div class="fp-signature__party">
+                          <img class="fp-signature__avatar" src="https://i.pravatar.cc/56?img=33" alt="" width="56" height="56" loading="lazy" />
+                          <div class="fp-signature__party-text">
+                            <span class="fp-signature__label">Agent:</span>
+                            <span class="fp-signature__name">Michael Botha</span>
+                          </div>
+                        </div>
+                        <div class="fp-signature__status">
+                          <span class="fp-signature__status-label">Status:</span>
+                          <span class="fp-signature__status-value" data-sig-agent>Delivered. Awaiting signature.</span>
+                        </div>
+                      </div>
+                      <div class="fp-signature__row">
+                        <div class="fp-signature__party">
+                          <img class="fp-signature__avatar" src="https://i.pravatar.cc/56?img=48" alt="" width="56" height="56" loading="lazy" />
+                          <div class="fp-signature__party-text">
+                            <span class="fp-signature__label">Landlord:</span>
+                            <span class="fp-signature__name">Lindiwe Ndlovu</span>
+                          </div>
+                        </div>
+                        <div class="fp-signature__status">
+                          <span class="fp-signature__status-label">Status:</span>
+                          <span class="fp-signature__status-value" data-sig-landlord>Delivered. Awaiting signature.</span>
+                        </div>
+                      </div>
+                     </div>
+                    </div>
+                    <button type="button" class="fp-mandate__btn fp-mandate__btn--primary fp-mandate__btn--send" data-send tabindex="-1">Send for signature</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        ) : mediaType === "tenant" ? (
+          <div class="fp-browser-shell">
+            <div class="fp-browser-shell__chrome">
+              <div class="fp-browser-shell__dots">
+                <span class="fp-browser-shell__dot fp-browser-shell__dot--red"></span>
+                <span class="fp-browser-shell__dot fp-browser-shell__dot--yellow"></span>
+                <span class="fp-browser-shell__dot fp-browser-shell__dot--green"></span>
+              </div>
+              <div class="fp-browser-shell__urlbar">
+                <span class="fp-browser-shell__url">www.talozen.com</span>
+              </div>
+            </div>
+          <div class="fp-preview fp-preview--tenant" role="img" aria-label="Product wireframe preview — tenant approvals">
+            <div class="fp-preview__frame">
+              <header class="fp-preview__header">
+                <img class="fp-preview__property-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=120&h=120&fit=crop&crop=center" alt="" width="120" height="120" loading="lazy" />
+                <div class="fp-preview__header-text">
+                  <p class="fp-preview__address">8 Benmore Road, Benmore Gardens, Sandton</p>
+                  <p class="fp-preview__address-sub">Lease</p>
+                </div>
+              </header>
+              <nav class="fp-preview__steps" aria-label="Workflow">
+                <span class="fp-preview__pill">
+                  <svg class="fp-preview__pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  Lease applications
+                </span>
+                <span class="fp-preview__arrow" aria-hidden="true">→</span>
+                <span class="fp-preview__pill fp-preview__pill--active">
+                  <svg class="fp-preview__pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  Approvals
+                </span>
+                <span class="fp-preview__arrow" aria-hidden="true">→</span>
+                <span class="fp-preview__pill">
+                  <svg class="fp-preview__pill-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                  Generate and sign
+                </span>
+              </nav>
+              <div class="fp-tenant__body" data-tenant-loading>
+                <div class="fp-tenant__loader" aria-hidden="true">
+                  <svg class="fp-tenant__load-spinner" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="var(--border-default)" stroke-width="2.5"/>
+                    <path d="M12 2a10 10 0 0 1 10 10" stroke="var(--text-brand)" stroke-width="2.5" stroke-linecap="round"/>
+                  </svg>
+                  <span class="fp-tenant__loader-text">Loading lease application…</span>
+                </div>
+                <div class="fp-tenant__left">
+                  <div class="fp-tenant__card">
+                    <div class="fp-tenant__card-row">
+                      <img class="fp-tenant__avatar-circle" src="/assets/docs/naledi-avatar.png" alt="" width="56" height="56" loading="lazy" />
+                      <span class="fp-tenant__name">Naledi Mahlangu</span>
+                    </div>
+                    <p class="fp-tenant__detail">naledi.mahlangu@gmail.com</p>
+                    <p class="fp-tenant__detail">+27 72 845 3291</p>
+                    <p class="fp-tenant__detail">ID: 9108230184086</p>
+                    <p class="fp-tenant__detail">Country of citizenship: South Africa</p>
+                    <p class="fp-tenant__detail">Sex: Female</p>
+                    <p class="fp-tenant__detail">Age: 34</p>
+                    <p class="fp-tenant__detail">Date of birth: 23/08/1991</p>
+                    <p class="fp-tenant__detail">Marital status: Married - OCP with accrual</p>
+                  </div>
+                  <div class="fp-tenant__card">
+                    <p class="fp-tenant__card-heading">Address</p>
+                    <p class="fp-tenant__detail">14 Rivonia Road</p>
+                    <p class="fp-tenant__detail">Sandhurst</p>
+                    <p class="fp-tenant__detail">Sandton</p>
+                    <p class="fp-tenant__detail">2196</p>
+                  </div>
+                  <div class="fp-tenant__card">
+                    <p class="fp-tenant__card-heading">Employment</p>
+                    <p class="fp-tenant__detail">Type: Full-time</p>
+                    <p class="fp-tenant__detail">Occupation: Senior Financial Analyst</p>
+                    <p class="fp-tenant__detail">Current employer: Discovery Ltd</p>
+                    <p class="fp-tenant__detail">Start date: 01/03/2019</p>
+                  </div>
+                </div>
+                <div class="fp-tenant__right">
+                  <div class="fp-tenant__card">
+                    <p class="fp-tenant__card-heading">FICA status</p>
+                    <div class="fp-tenant__fica-compliant">
+                      <svg class="fp-tenant__fica-check" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg>
+                      <span>Compliant</span>
+                    </div>
+                  </div>
+                  <div class="fp-tenant__card fp-tenant__card--docs">
+                    <p class="fp-tenant__card-heading">FICA Documents</p>
+                    <div class="fp-tenant__docs-list">
+                      <div class="fp-tenant__doc-item">
+                        <img class="fp-tenant__doc-thumb" src="/assets/docs/fica-questionnaire.png" alt="" width="48" height="48" loading="lazy" />
+                        <span class="fp-tenant__doc-label">FICA questionnaire</span>
+                      </div>
+                      <div class="fp-tenant__doc-item">
+                        <img class="fp-tenant__doc-thumb" src="/assets/docs/proof-of-address.png" alt="" width="48" height="48" loading="lazy" />
+                        <span class="fp-tenant__doc-label">Proof of address</span>
+                      </div>
+                      <div class="fp-tenant__doc-item">
+                        <img class="fp-tenant__doc-thumb" src="/assets/docs/id-passport.png" alt="" width="48" height="48" loading="lazy" />
+                        <span class="fp-tenant__doc-label">ID / Passport</span>
+                      </div>
+                      <div class="fp-tenant__doc-item">
+                        <img class="fp-tenant__doc-thumb" src="/assets/docs/bank-statements.png" alt="" width="48" height="48" loading="lazy" />
+                        <span class="fp-tenant__doc-label">Bank statements</span>
+                      </div>
+                      <div class="fp-tenant__doc-item">
+                        <img class="fp-tenant__doc-thumb" src="/assets/docs/payslip.png" alt="" width="48" height="48" loading="lazy" />
+                        <span class="fp-tenant__doc-label">Payslip</span>
+                      </div>
+                      <div class="fp-tenant__doc-item">
+                        <img class="fp-tenant__doc-thumb" src="/assets/docs/tax-number.png" alt="" width="48" height="48" loading="lazy" />
+                        <span class="fp-tenant__doc-label">Proof of tax number</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fp-tenant__card fp-tenant__card--credit" data-credit-card>
+                    <div class="fp-tenant__credit-default" data-credit-default>
+                      <p class="fp-tenant__card-heading">Credit check</p>
+                      <button type="button" class="fp-tenant__credit-btn" data-credit-btn tabindex="-1">Run credit check</button>
+                    </div>
+                    <div class="fp-tenant__credit-loading" data-credit-loading style="display:none;">
+                      <div class="fp-tenant__spinner"></div>
+                      <span class="fp-tenant__credit-loading-text">Running credit check…</span>
+                    </div>
+                    <div class="fp-tenant__credit-result" data-credit-result style="display:none;">
+                      <img class="fp-tenant__doc-thumb" src="/assets/docs/credit-report.png" alt="" width="48" height="48" loading="lazy" />
+                      <div class="fp-tenant__credit-result-info">
+                        <span class="fp-tenant__doc-label">Credit Bureau Report</span>
+                        <span class="fp-tenant__credit-score">Score: 720 · <span class="fp-tenant__credit-pass">Low Risk</span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="fp-tenant__actions" data-tenant-actions style="display:none;">
+                    <button type="button" class="fp-tenant__action-btn fp-tenant__action-btn--reject" data-action-reject tabindex="-1">Reject tenant</button>
+                    <button type="button" class="fp-tenant__action-btn fp-tenant__action-btn--accept" data-action-accept tabindex="-1">Accept tenant</button>
+                  </div>
+                </div>
+                <div class="fp-tenant__confirmation" data-tenant-confirmation style="display:none;">
+                  <div class="fp-tenant__confirmation-content">
+                    <div class="fp-tenant__confirmation-icon" data-confirmation-icon>
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <p class="fp-tenant__confirmation-text" data-confirmation-text>Tenant accepted</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        ) : embedUrl ? (
+          <div class="feature-panel__embed">
+            <iframe
+              src={embedUrl}
+              title={embedTitle}
+              frameborder="0"
+              loading="lazy"
+              allowfullscreen
+              allow="clipboard-write"
+            />
+          </div>
+        ) : (
+          <div class="feature-panel__image-placeholder" />
+        )}
+      </div>
+      <div class="feature-panel__content">
+        <div class="feature-panel__text">
+          <h2 class="feature-panel__heading">{headline}</h2>
+          {subheadline && <p class="feature-panel__subheading">{subheadline}</p>}
+        </div>
+        {cta && (
+          <div class="feature-panel__cta">
+            <a 
+              href={ctaHref ?? "/signup"} 
+              target={ctaHref?.startsWith("http") ? "_blank" : undefined}
+              rel={ctaHref?.startsWith("http") ? "noopener noreferrer" : undefined}
+              class="tz-btn tz-btn--primary"
+            >
+              {cta}
+            </a>
+          </div>
+        )}
+        {items && items.length > 0 && (
+          <div class="feature-panel__cards">
+            {items.map((item, i) => (
+              <div class="feature-panel__card" style={`--card-i: ${i}`}>
+                <div class="feature-panel__card-icon" aria-hidden="true">
+                  {getIcon(item.title) === 'user-plus' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                  )}
+                  {getIcon(item.title) === 'building' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M16 10h.01"/><path d="M8 14h.01"/><path d="M16 14h.01"/></svg>
+                  )}
+                  {getIcon(item.title) === 'pen-tool' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+                  )}
+                  {getIcon(item.title) === 'clock' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  )}
+                  {getIcon(item.title) === 'shield-check' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                  )}
+                  {getIcon(item.title) === 'credit-card' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                  )}
+                  {getIcon(item.title) === 'calendar' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  )}
+                  {getIcon(item.title) === 'lock' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  )}
+                  {getIcon(item.title) === 'zap' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  )}
+                  {getIcon(item.title) === 'bar-chart' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                  )}
+                  {getIcon(item.title) === 'trending-up' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                  )}
+                  {getIcon(item.title) === 'shield' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  )}
+                  {getIcon(item.title) === 'check' && (
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  )}
+                </div>
+                <h3 class="feature-panel__card-title">{item.title}</h3>
+                <p class="feature-panel__card-body">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-panel {
+    background-color: var(--bg-default);
+    padding-block: clamp(var(--space-1200), 8vw, var(--space-2400));
+  }
+
+  .feature-panel--secondary {
+    background-color: var(--bg-secondary);
+  }
+
+  .feature-panel__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-800);
+    align-items: center;
+  }
+
+  @media (min-width: 1025px) {
+    .feature-panel__inner {
+      flex-direction: row;
+      gap: var(--space-1200);
+      text-align: left;
+      align-items: flex-start;
+    }
+
+    .feature-panel__inner--reversed {
+      flex-direction: row-reverse;
+    }
+
+    .feature-panel__media,
+    .feature-panel__content {
+      width: 50%;
+    }
+
+    .feature-panel__content {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .feature-panel__text {
+      text-align: left;
+    }
+
+    /* Mandate and tenant sections: stacked layout with full-width media */
+    .feature-panel__inner:has(.fp-preview--mandate),
+    .feature-panel__inner:has(.fp-preview--tenant) {
+      flex-direction: column;
+      gap: var(--space-800);
+    }
+
+    .feature-panel__inner:has(.fp-preview--mandate) .feature-panel__media,
+    .feature-panel__inner:has(.fp-preview--tenant) .feature-panel__media {
+      width: 100%;
+    }
+
+    .feature-panel__inner:has(.fp-preview--mandate) .feature-panel__content,
+    .feature-panel__inner:has(.fp-preview--tenant) .feature-panel__content {
+      width: 100%;
+      align-items: center;
+      text-align: center;
+    }
+
+    .feature-panel__inner:has(.fp-preview--mandate) .feature-panel__text,
+    .feature-panel__inner:has(.fp-preview--tenant) .feature-panel__text {
+      text-align: center;
+    }
+  }
+
+  .feature-panel__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-200);
+  }
+
+  @media (min-width: 1025px) {
+    .feature-panel__cta {
+      justify-content: flex-start;
+    }
+  }
+
+  .feature-panel__media {
+    width: 100%;
+    border-radius: var(--radius-400);
+    overflow: hidden;
+    background-color: var(--bg-tertiary);
+    order: 2;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .feature-panel__media.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .feature-panel__media.is-visible .fp-preview__header {
+    animation: fp-media-enter 0.6s ease-out forwards 0.15s;
+    opacity: 0;
+  }
+
+  .feature-panel__media.is-visible .fp-preview__steps {
+    animation: fp-media-enter 0.5s ease-out forwards 0.25s;
+    opacity: 0;
+  }
+
+  .feature-panel__media.is-visible .fp-preview__main,
+  .feature-panel__media.is-visible .fp-mandate__body,
+  .feature-panel__media.is-visible .fp-tenant__body {
+    animation: fp-media-enter 0.5s ease-out forwards 0.35s;
+    opacity: 0;
+  }
+
+  @keyframes fp-media-enter {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .feature-panel__embed {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+  }
+
+  .feature-panel__embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color-scheme: light;
+  }
+
+  .feature-panel__image-placeholder {
+    width: 100%;
+    height: 350px;
+    background-color: var(--bg-tertiary);
+  }
+
+  .feature-panel__content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-600);
+    text-align: left;
+    align-items: flex-start;
+    order: 1;
+  }
+
+  .feature-panel__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+  }
+
+  .feature-panel__heading {
+    font-family: var(--font-sans);
+    font-size: var(--size-07);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .feature-panel__subheading {
+    font-family: var(--font-sans);
+    font-size: var(--size-05);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-snug);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .feature-panel__cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-600);
+    width: 100%;
+    text-align: left;
+  }
+
+  .feature-panel__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-300);
+    padding: var(--space-600);
+    border-radius: var(--radius-400);
+    background: var(--bg-default);
+    border: var(--stroke-border) solid var(--border-default);
+    box-shadow: var(--shadow-100);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .feature-panel__card.is-visible {
+    animation: card-enter 0.5s ease-out forwards;
+    animation-delay: calc(var(--card-i) * 120ms);
+  }
+
+  .feature-panel__card.is-visible:hover {
+    box-shadow: var(--shadow-200);
+    transform: translateY(-2px);
+  }
+
+  .feature-panel__card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-300);
+    background: var(--bg-brand-tertiary);
+    color: var(--text-brand);
+    flex-shrink: 0;
+  }
+
+  .feature-panel__card-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .feature-panel__card-title {
+    font-family: var(--font-sans);
+    font-size: var(--size-04);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .feature-panel__card-body {
+    font-family: var(--font-sans);
+    font-size: var(--size-03);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  @keyframes card-enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .feature-panel__content {
+      text-align: center;
+      align-items: center;
+    }
+
+    .feature-panel__text {
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .feature-panel__cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .feature-panel__cards {
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-400);
+    }
+
+    .feature-panel__card {
+      padding: var(--space-400);
+    }
+  }
+
+  .feature-panel--secondary .feature-panel__card {
+    background: var(--bg-default);
+  }
+
+  /* Browser shell chrome */
+  .fp-browser-shell {
+    --shell-radius: clamp(14px, 2.5cqi, 22px);
+    --shell-padding: clamp(2px, 0.4cqi, 4px);
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--shell-radius);
+    background: #2e2e2e;
+    padding: var(--shell-padding);
+    box-shadow: var(--shadow-xl), 0 0 0 1px rgba(255,255,255,0.08) inset;
+    overflow: hidden;
+  }
+
+  .fp-browser-shell__chrome {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1.2cqi, 10px);
+    padding: clamp(4px, 0.8cqi, 8px) clamp(8px, 1.2cqi, 12px);
+  }
+
+  .fp-browser-shell__dots {
+    display: flex;
+    align-items: center;
+    gap: clamp(3px, 0.6cqi, 5px);
+    flex-shrink: 0;
+  }
+
+  .fp-browser-shell__dot {
+    display: block;
+    width: clamp(6px, 1.2cqi, 10px);
+    height: clamp(6px, 1.2cqi, 10px);
+    border-radius: 50%;
+  }
+
+  .fp-browser-shell__dot--red    { background: #ff5f57; }
+  .fp-browser-shell__dot--yellow { background: #febc2e; }
+  .fp-browser-shell__dot--green  { background: #28c840; }
+
+  .fp-browser-shell__urlbar {
+    flex: 1;
+    min-width: 0;
+    background: #3d3d3d;
+    border-radius: clamp(3px, 0.6cqi, 5px);
+    padding: clamp(2px, 0.4cqi, 4px) clamp(6px, 1.2cqi, 10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fp-browser-shell__url {
+    font-family: var(--font-sans);
+    font-size: clamp(0.55rem, 1.2cqi, 0.7rem);
+    color: #a0a0a0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1;
+  }
+
+  .fp-browser-shell .fp-preview {
+    border-radius: calc(var(--shell-radius) - var(--shell-padding));
+    box-shadow: none;
+  }
+
+  .fp-browser-shell .fp-preview--mandate,
+  .fp-browser-shell .fp-preview--tenant {
+    max-width: 100%;
+    margin-inline: 0;
+    border: none;
+  }
+
+  /* Wireframe preview styles */
+  .fp-preview {
+    font-family: var(--font-sans);
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    max-height: 0;
+    padding-bottom: calc(66.67% - 100px);
+    border-radius: var(--radius-400);
+    box-shadow: var(--shadow-xl), 0 0 0 var(--stroke-border) var(--border-default);
+    overflow: hidden;
+    border: none;
+    background: var(--bg-default);
+    pointer-events: none;
+    container-type: inline-size;
+    position: relative;
+  }
+
+  .fp-preview.fp-preview--mandate {
+    border: var(--stroke-border) solid var(--border-default);
+    box-shadow: var(--shadow-md);
+  }
+
+  .fp-preview--mandate,
+  .fp-preview--tenant {
+    max-width: calc(100% - 200px);
+    margin-inline: auto;
+  }
+
+  .feature-panel__media:has(.fp-preview--mandate),
+  .feature-panel__media:has(.fp-preview--tenant) {
+    background: transparent;
+  }
+
+  .fp-preview > .fp-preview__frame {
+    position: absolute;
+    inset: 0;
+  }
+
+  .fp-preview__frame {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .fp-preview__header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 1.5cqi, 14px);
+    padding: var(--space-300) var(--space-400);
+    background: #fff;
+    box-shadow: var(--shadow-100);
+    position: relative;
+    z-index: 1;
+  }
+
+  .fp-preview__property-img {
+    width: clamp(32px, 7cqi, 52px);
+    height: clamp(32px, 7cqi, 52px);
+    border-radius: var(--radius-200);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .fp-preview__header-text {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1px, 0.4cqi, 3px);
+    min-width: 0;
+  }
+
+  .fp-preview__address {
+    margin: 0;
+    font-size: clamp(0.85rem, 2.4cqi, var(--size-05));
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+  }
+
+  .fp-preview__address-sub {
+    margin: 0;
+    font-size: clamp(0.75rem, 1.6cqi, 0.8rem);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    color: var(--text-secondary);
+  }
+
+  .fp-preview__steps {
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: var(--space-100);
+    padding: var(--space-400) var(--space-400);
+    background: var(--bg-secondary);
+  }
+
+  .fp-preview__pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(3px, 0.7cqi, 6px);
+    padding: var(--space-100) var(--space-300);
+    border-radius: var(--radius-full);
+    font-size: clamp(0.75rem, 1.8cqi, 0.875rem);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+    background: #fff;
+    border: var(--stroke-border) solid transparent;
+    white-space: nowrap;
+  }
+
+  .fp-preview__pill-icon {
+    width: clamp(16px, 2cqi, 14px);
+    height: clamp(16px, 2cqi, 14px);
+    flex-shrink: 0;
+  }
+
+  .fp-preview__pill--active {
+    font-weight: var(--weight-bold);
+    background: var(--bg-default);
+    border-color: var(--border-brand-tertiary);
+  }
+
+  .fp-preview__arrow {
+    font-size: clamp(0.75rem, 1.8cqi, 0.875rem);
+    color: var(--text-tertiary);
+    line-height: 1;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  @container (max-width: 600px) {
+    .fp-preview__pill:not(.fp-preview__pill--active) {
+      font-size: 0;
+      padding: var(--space-100);
+      gap: 0;
+    }
+
+    .fp-preview__pill:not(.fp-preview__pill--active) .fp-preview__pill-icon {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .fp-preview__main {
+    flex: 1;
+    min-height: 0;
+    padding: 0 var(--space-400) var(--space-300);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+    overflow: hidden;
+    background: var(--bg-secondary);
+  }
+
+  .fp-preview__title {
+    margin: 0;
+    font-size: clamp(0.8rem, 2.2cqi, var(--size-05));
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+  }
+
+  .fp-preview__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    container-type: inline-size;
+  }
+
+  .fp-preview__card {
+    display: grid;
+    grid-template-columns: clamp(18px, 4cqi, 28px) 1fr 1fr 1fr minmax(0, 1fr);
+    column-gap: clamp(6px, 1.5cqi, 14px);
+    align-items: center;
+    padding: clamp(8px, 1.5cqi, 12px) clamp(10px, 2cqi, 16px);
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-200);
+    background: var(--bg-default);
+    flex-shrink: 0;
+    min-height: 0;
+  }
+
+  .fp-preview__avatar {
+    grid-column: 1;
+    width: clamp(28px, 4cqi, 28px);
+    height: clamp(28px, 4cqi, 28px);
+    border-radius: var(--radius-full);
+    background: var(--bg-secondary);
+    border: var(--stroke-border) solid var(--border-default);
+    object-fit: cover;
+    display: block;
+  }
+
+  .fp-preview__name {
+    grid-column: 2;
+    font-size: clamp(0.75rem, 1.7cqi, 0.875rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    color: var(--text-default);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+  }
+
+  .fp-preview__pay {
+    grid-column: 3;
+    font-size: clamp(0.75rem, 1.7cqi, 0.875rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    color: var(--text-positive);
+    white-space: nowrap;
+    text-align: left;
+    background: var(--bg-positive-tertiary);
+    padding: clamp(6px, 1cqi, 10px) clamp(10px, 1.5cqi, 16px);
+    border-radius: var(--radius-full);
+    justify-self: start;
+  }
+
+  .fp-preview__fica {
+    grid-column: 4;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: clamp(2px, 0.6cqi, 5px);
+    font-size: clamp(0.75rem, 1.7cqi, 0.875rem);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: var(--text-default);
+    white-space: nowrap;
+    text-align: left;
+  }
+
+  .fp-preview__check {
+    flex-shrink: 0;
+    color: var(--text-positive);
+    width: clamp(16px, 2.4cqi, 16px);
+    height: clamp(16px, 2.4cqi, 16px);
+  }
+
+  .fp-preview__action {
+    grid-column: 5;
+    justify-self: end;
+    min-width: min-content;
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 1.7cqi, 0.875rem);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: var(--text-default);
+    background: var(--bg-brand-tertiary);
+    border: none;
+    border-radius: var(--radius-full);
+    padding: clamp(8px, 1cqi, 12px) clamp(12px, 1.5cqi, 16px);
+    cursor: default;
+    white-space: nowrap;
+  }
+
+  .fp-preview__status {
+    grid-column: 5;
+    justify-self: end;
+    min-width: min-content;
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 1.7cqi, 0.875rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+    padding: clamp(6px, 1cqi, 10px) clamp(10px, 1.5cqi, 16px);
+    border-radius: var(--radius-full);
+  }
+
+  .fp-preview__status--processing {
+    background: var(--bg-warning-tertiary);
+    color: var(--text-warning);
+  }
+
+  .fp-preview__status--complete {
+    background: var(--bg-positive-tertiary);
+    color: var(--text-positive);
+  }
+
+  /* Mandate variant */
+  .fp-mandate__body {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.2fr 0.7fr;
+    grid-template-rows: minmax(0, 1fr);
+    gap: clamp(8px, 2cqi, 20px);
+    padding: clamp(8px, 2cqi, 20px) var(--space-400);
+    background: var(--bg-secondary);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .fp-mandate__loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 1.5cqi, 14px);
+    background: var(--bg-secondary);
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .fp-mandate__body[data-loading] .fp-mandate__loader {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .fp-mandate__spinner {
+    width: clamp(28px, 4cqi, 32px);
+    height: clamp(28px, 4cqi, 32px);
+    animation: mandate-spin 0.8s linear infinite;
+  }
+
+  .fp-mandate__loader-text {
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 1.7cqi, 0.875rem);
+    font-weight: var(--weight-medium);
+    color: var(--text-secondary);
+  }
+
+  .fp-mandate__doc-wrap,
+  .fp-mandate__sidebar {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .fp-mandate__body[data-loading] .fp-mandate__doc-wrap,
+  .fp-mandate__body[data-loading] .fp-mandate__sidebar {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-wrap {
+    animation: mandate-fade-up 0.4s ease-out forwards;
+  }
+
+  .fp-mandate__body[data-revealed] .fp-mandate__sidebar {
+    animation: mandate-fade-up 0.4s ease-out forwards;
+    animation-delay: 0.15s;
+  }
+
+  .fp-mandate__doc-inner > * {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > * {
+    animation: mandate-line-in 0.3s ease-out forwards;
+  }
+
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(1)  { animation-delay: 0.2s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(2)  { animation-delay: 0.35s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(3)  { animation-delay: 0.5s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(4)  { animation-delay: 0.65s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(5)  { animation-delay: 0.8s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(6)  { animation-delay: 0.95s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(7)  { animation-delay: 1.1s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(8)  { animation-delay: 1.25s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(9)  { animation-delay: 1.4s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(10) { animation-delay: 1.55s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(11) { animation-delay: 1.7s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(12) { animation-delay: 1.85s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(13) { animation-delay: 2.0s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(14) { animation-delay: 2.15s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(15) { animation-delay: 2.3s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(16) { animation-delay: 2.45s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(17) { animation-delay: 2.6s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(18) { animation-delay: 2.75s; }
+  .fp-mandate__body[data-revealed] .fp-mandate__doc-inner > :nth-child(19) { animation-delay: 2.9s; }
+
+  .fp-mandate__sidebar-title,
+  .fp-mandate__owner-card,
+  .fp-mandate__fields,
+  .fp-mandate__actions {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  .fp-mandate__body[data-revealed] .fp-mandate__sidebar-title {
+    animation: mandate-fade-up 0.35s ease-out forwards;
+    animation-delay: 0.2s;
+  }
+
+  .fp-mandate__body[data-revealed] .fp-mandate__owner-card {
+    animation: mandate-fade-up 0.35s ease-out forwards;
+    animation-delay: 0.3s;
+  }
+
+  .fp-mandate__body[data-revealed] .fp-mandate__fields {
+    animation: mandate-fade-up 0.35s ease-out forwards;
+    animation-delay: 0.45s;
+  }
+
+  .fp-mandate__body[data-revealed] .fp-mandate__actions {
+    animation: mandate-fade-up 0.35s ease-out forwards;
+    animation-delay: 0.55s;
+  }
+
+  .fp-mandate__doc-wrap {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .fp-mandate__doc-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), #fff 90%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .fp-mandate__doc {
+    border: none;
+    border-radius: 0;
+    background: #fff;
+    padding: clamp(16px, 4cqi, 32px) clamp(14px, 3.5cqi, 28px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    pointer-events: auto;
+    scrollbar-width: auto;
+    scrollbar-color: var(--text-tertiary) var(--bg-secondary);
+    height: 100%;
+  }
+
+  .fp-mandate__doc-inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(4px, 1cqi, 10px);
+    padding-bottom: 60px;
+  }
+
+  .fp-mandate__doc-signatures {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(12px, 3cqi, 24px);
+    margin-top: clamp(12px, 3cqi, 24px);
+    padding-top: clamp(12px, 3cqi, 24px);
+    border-top: 1px solid var(--border-default);
+  }
+
+  .fp-mandate__doc-sig {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2px, 0.5cqi, 4px);
+  }
+
+  .fp-mandate__doc-sig-label {
+    font-size: clamp(0.75rem, 1.1cqi, 0.625rem);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+
+  .fp-mandate__doc-sig-canvas {
+    position: relative;
+    min-height: clamp(32px, 7cqi, 44px);
+    margin-bottom: clamp(2px, 0.5cqi, 4px);
+  }
+
+  .fp-mandate__doc-sig-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--text-default);
+    margin: 0;
+  }
+
+  .fp-mandate__doc-sig-ink {
+    position: absolute;
+    left: 0;
+    bottom: 6px;
+    margin: 0;
+    font-family: 'Segoe Script', 'Brush Script MT', 'Apple Chancery', cursive;
+    font-size: clamp(0.75rem, 1.3cqi, 0.8rem);
+    font-weight: var(--weight-regular);
+    color: var(--text-default);
+    line-height: 1.1;
+    transform: rotate(-1.5deg);
+  }
+
+  .fp-mandate__doc-sig-ink[hidden] {
+    display: none !important;
+  }
+
+  .fp-mandate__doc-sig-name {
+    font-size: clamp(0.75rem, 1.1cqi, 0.625rem);
+    font-weight: var(--weight-medium);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .fp-mandate__doc-sig-detail {
+    font-size: clamp(0.75rem, 1cqi, 0.575rem);
+    font-weight: var(--weight-regular);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .fp-mandate__doc-logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: clamp(4px, 1cqi, 8px);
+    padding-bottom: clamp(4px, 1cqi, 8px);
+  }
+
+  .fp-mandate__doc-logo-mark {
+    width: clamp(28px, 4cqi, 28px);
+    height: clamp(28px, 4cqi, 28px);
+    flex-shrink: 0;
+  }
+
+  .fp-mandate__doc-logo-text {
+    font-size: clamp(0.75rem, 1.6cqi, 0.85rem);
+    font-weight: var(--weight-bold);
+    color: var(--text-default);
+    letter-spacing: 0.03em;
+  }
+
+  .fp-mandate__doc-heading {
+    margin: 0;
+    font-size: clamp(0.75rem, 1.8cqi, 0.9rem);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+    text-align: left;
+    letter-spacing: 0.05em;
+    padding-bottom: clamp(4px, 1cqi, 8px);
+    border-bottom: var(--stroke-border) solid var(--border-default);
+  }
+
+  .fp-mandate__doc-subheading {
+    margin: 0;
+    margin-top: clamp(2px, 0.5cqi, 6px);
+    font-size: clamp(0.75rem, 1.5cqi, 0.75rem);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .fp-mandate__doc-text {
+    margin: 0;
+    font-size: clamp(0.75rem, 1.3cqi, 0.7rem);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .fp-mandate__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(4px, 1cqi, 8px);
+    align-items: flex-end;
+    overflow: visible;
+  }
+
+  .fp-mandate__bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: clamp(4px, 1cqi, 8px);
+    margin-top: auto;
+    overflow: visible;
+  }
+
+  .fp-mandate__actions {
+    display: flex;
+    gap: clamp(4px, 1cqi, 8px);
+  }
+
+  .fp-mandate__btn {
+    flex: 1 1 0%;
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 1.7cqi, 0.875rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    padding: clamp(6px, 1.2cqi, 12px) clamp(10px, 2cqi, 16px);
+    border-radius: var(--radius-200);
+    border: var(--stroke-border) solid var(--border-default);
+    background: var(--bg-default);
+    color: var(--text-default);
+    cursor: default;
+    white-space: nowrap;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .fp-mandate__btn--regen {
+    flex: none;
+    max-width: 200px;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .fp-mandate__btn--regen:hover {
+    background: var(--bg-secondary);
+  }
+
+  .fp-mandate__btn--primary {
+    background: var(--bg-brand);
+    color: #ffffff;
+    border-color: transparent;
+  }
+
+  /* Floating callout — appended to body, outside all overflow containers */
+  :global(.fp-callout-float) {
+    position: absolute;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 9999;
+    animation: callout-appear 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation-play-state: paused;
+    filter: drop-shadow(0 2px 12px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+  }
+
+  :global(.fp-callout-float[data-visible]) {
+    animation-play-state: running;
+  }
+
+  :global(.fp-callout-float[data-wiggle]) {
+    animation: callout-appear 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, callout-wiggle 1.8s ease-in-out 0.8s infinite, callout-glow 2.5s ease-in-out 1s infinite;
+  }
+
+  :global(.fp-callout-float__text) {
+    font-family: 'Caveat', 'Segoe Script', 'Comic Sans MS', cursive;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 700;
+    background: linear-gradient(90deg, #3b5eff 0%, #7c3aed 20%, #db2777 40%, #f97316 60%, #7c3aed 80%, #3b5eff 100%);
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 12s ease-in-out infinite;
+    white-space: nowrap;
+    line-height: 1;
+    transform: rotate(-3deg);
+  }
+
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  :global(.fp-callout-float__arrow) {
+    width: clamp(50px, 5vw, 68px);
+    height: clamp(46px, 4.5vw, 62px);
+    margin-top: 6px;
+  }
+
+  .fp-mandate__btn--send {
+    flex: none;
+    max-width: 200px;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  .fp-mandate__btn--send:hover {
+    opacity: 0.9;
+  }
+
+  .fp-mandate__bottom:has(.fp-mandate__sending[data-active]) .fp-mandate__btn--send,
+  .fp-mandate__bottom:has(.fp-signature[data-visible]) .fp-mandate__btn--send {
+    display: none;
+  }
+
+  @keyframes callout-appear {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.3) translateY(12px);
+    }
+    70% {
+      opacity: 1;
+      transform: translateX(-50%) scale(1.1) translateY(-2px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(-50%) scale(1) translateY(0);
+    }
+  }
+
+  @keyframes callout-wiggle {
+    0%, 100% { transform: translateX(-50%) scale(1) rotate(0deg); }
+    15% { transform: translateX(-50%) scale(1.08) rotate(-5deg); }
+    30% { transform: translateX(-50%) scale(1) rotate(4deg); }
+    45% { transform: translateX(-50%) scale(1.05) rotate(-3deg); }
+    60% { transform: translateX(-50%) scale(1) rotate(2deg); }
+    80% { transform: translateX(-50%) scale(1) rotate(-1deg); }
+  }
+
+  @keyframes callout-glow {
+    0%, 100% { filter: drop-shadow(0 2px 12px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.4)); }
+    50% { filter: drop-shadow(0 2px 16px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 32px rgba(255, 255, 255, 0.6)); }
+  }
+
+  .fp-mandate__fields {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 0.7cqi, 6px);
+    max-width: 260px;
+  }
+
+  .fp-mandate__field {
+    display: flex;
+    align-items: center;
+    gap: clamp(4px, 1cqi, 8px);
+  }
+
+  .fp-mandate__field-label {
+    font-size: clamp(0.75rem, 1.2cqi, 0.65rem);
+    font-weight: var(--weight-medium);
+    color: var(--text-secondary);
+    line-height: var(--leading-tight);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: clamp(60px, 14cqi, 100px);
+  }
+
+  .fp-mandate__field-input {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 1.4cqi, 0.75rem);
+    font-weight: var(--weight-regular);
+    line-height: 1;
+    color: var(--text-default);
+    background: #fff;
+    border: var(--stroke-border) solid var(--border-default);
+    border-radius: var(--radius-100);
+    padding: clamp(6px, 1cqi, 10px) clamp(5px, 1cqi, 8px);
+    pointer-events: auto;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+
+  .fp-mandate__field-input:focus {
+    border-color: var(--border-brand-tertiary);
+  }
+
+  .fp-mandate__sidebar-title {
+    font-size: clamp(0.75rem, 1.8cqi, 0.95rem);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+    margin: 0;
+  }
+
+  .fp-mandate__owner-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(6px, 1.5cqi, 12px);
+    padding: clamp(8px, 1.5cqi, 14px) clamp(10px, 2cqi, 16px);
+    border-radius: var(--radius-300);
+    max-width: 300px;
+    background: #fff;
+    border: var(--stroke-border) solid var(--border-default);
+  }
+
+  .fp-mandate__owner-left {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1.2cqi, 10px);
+    min-width: 0;
+  }
+
+  .fp-mandate__owner-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: clamp(1px, 0.3cqi, 3px);
+    flex-shrink: 0;
+  }
+
+  .fp-mandate__owner-avatar {
+    width: clamp(24px, 5cqi, 36px);
+    height: clamp(24px, 5cqi, 36px);
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .fp-mandate__owner-name {
+    font-size: clamp(0.75rem, 1.5cqi, 0.8rem);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+    white-space: nowrap;
+  }
+
+  .fp-mandate__owner-detail {
+    font-size: clamp(0.75rem, 1.2cqi, 0.7rem);
+    font-weight: var(--weight-regular);
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  /* Sending state */
+  .fp-mandate__sending {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 1.2cqi, 10px);
+    padding: clamp(10px, 2cqi, 20px);
+    border-radius: var(--radius-200);
+    background: var(--bg-brand-tertiary);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+  }
+
+  .fp-mandate__sending:not([data-active]) {
+    display: none;
+  }
+
+  .fp-mandate__sending[data-active] {
+    display: flex;
+    opacity: 1;
+    max-height: 120px;
+  }
+
+  .fp-mandate__sidebar:has(.fp-signature[data-visible]) .fp-mandate__bottom {
+    margin-top: -4px;
+  }
+
+  .fp-mandate__sending-icon {
+    width: clamp(28px, 4cqi, 32px);
+    height: clamp(28px, 4cqi, 32px);
+    color: var(--text-brand);
+    animation: mandate-send-bounce 1s ease-in-out infinite;
+  }
+
+  .fp-mandate__sending-text {
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 1.5cqi, 0.8rem);
+    font-weight: var(--weight-medium);
+    color: var(--text-brand);
+  }
+
+  @keyframes mandate-send-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  /* Signature panel */
+  .fp-signature {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.4s ease, opacity 0.3s ease;
+    overflow: hidden;
+    background: #fff;
+    border-radius: var(--radius-200);
+    border: var(--stroke-border) solid var(--border-default);
+  }
+
+  .fp-signature[data-visible] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .fp-signature__content {
+    min-height: 0;
+    overflow: hidden;
+    padding: clamp(6px, 1.2cqi, 10px);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.5cqi, 12px);
+  }
+
+  .fp-signature__heading {
+    margin: 0;
+    font-size: clamp(0.75rem, 1.9cqi, 0.95rem);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+    line-height: var(--leading-tight);
+  }
+
+  .fp-signature__row {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: clamp(6px, 1.5cqi, 12px);
+  }
+
+  .fp-signature__party {
+    display: flex;
+    align-items: center;
+    gap: clamp(4px, 1cqi, 8px);
+  }
+
+  .fp-signature__avatar {
+    width: clamp(28px, 4cqi, 28px);
+    height: clamp(28px, 4cqi, 28px);
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .fp-signature__party-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .fp-signature__label {
+    font-size: clamp(0.75rem, 1.4cqi, 0.75rem);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+    line-height: var(--leading-tight);
+  }
+
+  .fp-signature__name {
+    font-size: clamp(0.75rem, 1.3cqi, 0.7rem);
+    font-weight: var(--weight-regular);
+    color: var(--text-secondary);
+    line-height: var(--leading-tight);
+  }
+
+  .fp-signature__status {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .fp-signature__status-label {
+    font-size: clamp(0.75rem, 1.4cqi, 0.75rem);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+    line-height: var(--leading-tight);
+  }
+
+  .fp-signature__status-value {
+    font-size: clamp(0.75rem, 1.3cqi, 0.7rem);
+    font-weight: var(--weight-regular);
+    color: var(--text-secondary);
+    line-height: var(--leading-tight);
+    transition: color 0.3s ease;
+  }
+
+  .fp-signature__status-value[data-signed] {
+    color: var(--text-positive);
+    font-weight: var(--weight-semibold);
+  }
+
+  @keyframes mandate-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes mandate-fade-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes mandate-line-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .feature-panel__media {
+      max-width: 100%;
+      border-radius: var(--radius-400);
+    }
+
+    .fp-preview {
+      aspect-ratio: auto;
+      max-height: none;
+      padding-bottom: 0;
+      border-radius: var(--radius-400);
+      box-shadow: var(--shadow-lg), 0 0 0 var(--stroke-border) var(--border-default);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .fp-preview.fp-preview--mandate {
+      border: var(--stroke-border) solid var(--border-default);
+      box-shadow: var(--shadow-md);
+    }
+
+    .fp-preview--mandate,
+    .fp-preview--tenant {
+      max-width: 100%;
+    }
+
+    .fp-preview > .fp-preview__frame {
+      position: relative;
+      inset: auto;
+    }
+
+    .fp-preview__frame {
+      overflow: hidden;
+      height: auto;
+      border-radius: var(--radius-400);
+    }
+
+    .fp-preview__list {
+      max-height: calc(5 * (28px + var(--space-100)));
+      overflow: hidden;
+    }
+
+    .fp-mandate__doc-wrap {
+      max-height: 380px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    /* Mobile interactive sizing overrides */
+    .fp-preview__action,
+    .fp-preview__status {
+      font-size: 0.875rem !important;
+      padding: 10px 16px !important;
+    }
+    
+    .fp-preview__avatar {
+      width: 36px !important;
+      height: 36px !important;
+    }
+
+    .fp-preview__card {
+      grid-template-columns: 36px 1fr 1fr 1fr minmax(0, 1fr) !important;
+      padding: 12px 16px !important;
+    }
+
+    .fp-preview__name {
+      font-size: 0.875rem !important;
+    }
+
+    .fp-preview__title {
+      font-size: 1.1rem !important;
+      margin-bottom: 12px !important;
+    }
+
+    .fp-preview__pill--active {
+      font-size: 0.8rem !important;
+      padding: 6px 14px !important;
+    }
+
+    .fp-preview__pill:not(.fp-preview__pill--active) {
+      font-size: 0 !important;
+      padding: 6px !important;
+      gap: 0 !important;
+    }
+
+    .fp-preview__pill:not(.fp-preview__pill--active) .fp-preview__pill-icon {
+      width: 14px !important;
+      height: 14px !important;
+    }
+    
+    .fp-preview__address {
+      font-size: 1.05rem !important;
+    }
+
+    .fp-preview__address-sub {
+      font-size: 0.85rem !important;
+    }
+    
+    .fp-mandate__doc-sig-label {
+      font-size: 0.8rem !important;
+    }
+
+    .fp-mandate__doc-sig-name,
+    .fp-mandate__doc-sig-detail,
+    .fp-mandate__doc-sig-ink {
+      font-size: 0.75rem !important;
+    }
+
+    .fp-mandate__sidebar {
+      padding: clamp(12px, 3vw, 20px) !important;
+      align-items: stretch !important;
+      gap: 16px !important;
+    }
+
+    .fp-mandate__sidebar-title {
+      font-size: 1.1rem !important;
+      text-align: left !important;
+    }
+
+    .fp-mandate__owner-card,
+    .fp-mandate__fields {
+      max-width: none !important;
+      width: 100% !important;
+    }
+    
+    .fp-mandate__owner-card {
+      padding: 12px !important;
+    }
+
+    .fp-mandate__owner-name {
+      font-size: 1rem !important;
+    }
+
+    .fp-mandate__owner-detail {
+      font-size: 0.85rem !important;
+    }
+
+    .fp-mandate__field {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 6px !important;
+    }
+
+    .fp-mandate__field-label {
+      font-size: 0.9rem !important;
+      min-width: 0 !important;
+      text-align: left !important;
+    }
+
+    .fp-mandate__field-input {
+      font-size: 1rem !important;
+      padding: 12px !important;
+      width: 100% !important;
+    }
+
+    .fp-mandate__btn {
+      font-size: 1rem !important;
+      padding: 14px !important;
+      max-width: none !important;
+      width: 100% !important;
+    }
+
+    .fp-mandate__bottom {
+      width: 100% !important;
+      margin-top: 8px !important;
+    }
+
+    .fp-mandate__sending {
+      width: 100% !important;
+      justify-content: center !important;
+      padding: 16px 0 !important;
+    }
+
+    .fp-mandate__sending-text {
+      font-size: 1rem !important;
+    }
+
+    .fp-signature {
+      width: 100% !important;
+    }
+
+    .fp-signature__content {
+      padding: 16px !important;
+    }
+
+    .fp-signature__heading {
+      font-size: 1.1rem !important;
+    }
+
+    .fp-signature__row {
+       grid-template-columns: 1fr auto !important;
+       gap: 8px !important;
+       align-items: center !important;
+       padding-bottom: 16px !important;
+       border-bottom: 1px solid var(--border-default) !important;
+    }
+
+    .fp-signature__row:last-child {
+       padding-bottom: 0 !important;
+       border-bottom: none !important;
+       padding-top: 16px !important;
+    }
+
+    .fp-signature__status {
+      text-align: right !important;
+    }
+
+    .fp-signature__label,
+    .fp-signature__status-label {
+      font-size: 0.9rem !important;
+    }
+
+    .fp-signature__name,
+    .fp-signature__status-value {
+      font-size: 0.85rem !important;
+    }
+
+    .fp-signature__avatar {
+      width: 36px !important;
+      height: 36px !important;
+    }
+
+    .fp-tenant__doc-label {
+      font-size: 0.875rem !important;
+    }
+
+    /* Shorten mobile lease block layout */
+    .fp-tenant__left > .fp-tenant__card:nth-child(n+2) {
+      display: none !important;
+    }
+    
+    .fp-tenant__left > .fp-tenant__card:first-child > p:nth-of-type(n+3) {
+      display: none !important;
+    }
+
+    .fp-tenant__left::after {
+      display: none !important;
+    }
+
+    .fp-tenant__card--docs {
+      flex: none !important;
+      min-height: auto !important;
+    }
+
+    .fp-tenant__card--docs::after {
+      display: none !important;
+    }
+
+    .fp-tenant__docs-list > .fp-tenant__doc-item:nth-child(n+3) {
+      display: none !important;
+    }
+
+    .fp-mandate__body,
+    .fp-tenant__body {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+
+    .fp-mandate__doc-wrap {
+      max-height: 300px;
+      overflow: hidden;
+    }
+
+    .fp-mandate__doc {
+      overflow: hidden;
+    }
+
+    .fp-mandate__doc-inner {
+      will-change: transform;
+    }
+
+    .fp-mandate__doc-wrap::after {
+      height: 60px;
+    }
+  }
+
+  @container (max-width: 360px) {
+    .fp-preview__card {
+      grid-template-columns: clamp(18px, 4cqi, 28px) minmax(0, 1fr) auto auto;
+    }
+
+    .fp-preview__pay {
+      display: none;
+    }
+
+    .fp-preview__fica {
+      grid-column: 3;
+    }
+
+    .fp-preview__action,
+    .fp-preview__status {
+      grid-column: 4;
+    }
+  }
+
+  /* ── Tenant approval variant ── */
+  .fp-preview--tenant {
+    border: var(--stroke-border) solid var(--border-default);
+    box-shadow: var(--shadow-md);
+  }
+
+  .fp-tenant__body {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr);
+    gap: clamp(12px, 3cqi, 24px);
+    padding: clamp(12px, 2.5cqi, 24px) var(--space-400);
+    background: var(--bg-secondary);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .fp-tenant__loader {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 1.5cqi, 14px);
+    background: var(--bg-secondary);
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .fp-tenant__body[data-tenant-loading] .fp-tenant__loader {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .fp-tenant__load-spinner {
+    width: clamp(28px, 4cqi, 32px);
+    height: clamp(28px, 4cqi, 32px);
+    animation: mandate-spin 0.8s linear infinite;
+  }
+
+  .fp-tenant__loader-text {
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 1.7cqi, 0.875rem);
+    font-weight: var(--weight-medium);
+    color: var(--text-secondary);
+  }
+
+  .fp-tenant__body[data-tenant-loading] .fp-tenant__left,
+  .fp-tenant__body[data-tenant-loading] .fp-tenant__right {
+    opacity: 0;
+  }
+
+  .fp-tenant__body[data-tenant-revealed] .fp-tenant__left {
+    animation: mandate-fade-up 0.4s ease-out forwards;
+  }
+
+  .fp-tenant__body[data-tenant-revealed] .fp-tenant__right {
+    animation: mandate-fade-up 0.4s ease-out 0.15s forwards;
+  }
+
+  .fp-tenant__left {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 1.2cqi, 12px);
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .fp-tenant__left::after {
+    display: none;
+  }
+
+  .fp-tenant__card {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2px, 0.5cqi, 5px);
+    padding: clamp(8px, 1.5cqi, 14px) clamp(10px, 2cqi, 16px);
+    border-radius: var(--radius-300);
+    background: #fff;
+    border: var(--stroke-border) solid var(--border-default);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .fp-tenant__card-row {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1.2cqi, 10px);
+    padding-bottom: clamp(2px, 0.5cqi, 4px);
+  }
+
+  .fp-tenant__avatar-circle {
+    width: clamp(28px, 4.5cqi, 32px);
+    height: clamp(28px, 4.5cqi, 32px);
+    border-radius: var(--radius-full);
+    background: var(--bg-tertiary);
+    border: var(--stroke-border) solid var(--border-default);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .fp-tenant__name {
+    margin: 0;
+    font-size: clamp(0.75rem, 1.7cqi, 0.9rem);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+  }
+
+  .fp-tenant__card-heading {
+    margin: 0;
+    font-size: clamp(0.75rem, 1.7cqi, 0.9rem);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    color: var(--text-default);
+    padding-bottom: clamp(1px, 0.3cqi, 3px);
+  }
+
+  .fp-tenant__detail {
+    margin: 0;
+    font-size: clamp(0.75rem, 1.3cqi, 0.7rem);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .fp-tenant__right {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.5cqi, 16px);
+  }
+
+  .fp-tenant__section-title {
+    margin: 0;
+    font-size: clamp(0.75rem, 1.5cqi, 0.8rem);
+    font-weight: var(--weight-bold);
+    color: var(--text-default);
+    line-height: var(--leading-tight);
+  }
+
+  .fp-tenant__card--credit {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .fp-tenant__card--docs {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .fp-tenant__card--docs::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0), #fff 90%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .fp-tenant__credit-btn {
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 1.4cqi, 0.75rem);
+    font-weight: var(--weight-medium);
+    line-height: 1;
+    color: #ffffff;
+    background: var(--bg-brand);
+    border: none;
+    border-radius: var(--radius-200);
+    padding: clamp(10px, 1.5cqi, 16px) clamp(10px, 2cqi, 18px);
+    cursor: pointer;
+    pointer-events: auto;
+    white-space: nowrap;
+  }
+
+
+  .fp-tenant__credit-default {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .fp-tenant__credit-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(6px, 1.2cqi, 10px);
+    width: 100%;
+    padding: clamp(8px, 1.5cqi, 12px) 0;
+  }
+
+  .fp-tenant__spinner {
+    width: clamp(16px, 3cqi, 20px);
+    height: clamp(16px, 3cqi, 20px);
+    border: 2px solid var(--border-default);
+    border-top-color: var(--bg-brand);
+    border-radius: 50%;
+    animation: fp-spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes fp-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .fp-tenant__credit-loading-text {
+    font-size: clamp(0.75rem, 1.3cqi, 0.75rem);
+    font-weight: var(--weight-medium);
+    color: var(--text-secondary);
+  }
+
+  .fp-tenant__credit-result {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1.2cqi, 10px);
+    width: 100%;
+  }
+
+  .fp-tenant__credit-result-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .fp-tenant__credit-score {
+    font-size: clamp(0.75rem, 1.1cqi, 0.65rem);
+    font-weight: var(--weight-medium);
+    color: var(--text-secondary);
+    line-height: var(--leading-tight);
+  }
+
+  .fp-tenant__credit-pass {
+    color: var(--text-positive);
+    font-weight: var(--weight-semibold);
+  }
+
+  .fp-tenant__confirmation {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 10;
+    animation: fp-fade-in 0.3s ease;
+  }
+
+  .fp-tenant__confirmation-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    transform: translateY(-10px);
+    animation: fp-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .fp-tenant__confirmation-icon {
+    width: clamp(48px, 8cqi, 64px);
+    height: clamp(48px, 8cqi, 64px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-positive-tertiary);
+    color: var(--text-positive);
+  }
+
+  .fp-tenant__confirmation-icon--reject {
+    background: var(--bg-warning-tertiary);
+    color: var(--text-warning);
+  }
+
+  .fp-tenant__confirmation-text {
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 2cqi, 1.25rem);
+    font-weight: var(--weight-semibold);
+    color: var(--text-default);
+  }
+
+  @keyframes fp-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fp-slide-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(-10px); }
+  }
+
+  .fp-tenant__actions {
+    display: flex;
+    gap: clamp(8px, 1.5cqi, 12px);
+    width: 100%;
+    margin-top: clamp(8px, 1.5cqi, 12px);
+  }
+
+  .fp-tenant__action-btn {
+    flex: 1;
+    font-family: var(--font-sans);
+    font-size: clamp(0.75rem, 1.4cqi, 0.8rem);
+    font-weight: var(--weight-medium);
+    border-radius: var(--radius-200);
+    padding: clamp(6px, 1.2cqi, 12px);
+    cursor: pointer;
+    pointer-events: auto;
+    text-align: center;
+    border: var(--stroke-border) solid var(--border-default);
+    transition: all 0.2s ease;
+  }
+
+  .fp-tenant__action-btn--reject {
+    background: var(--bg-default);
+    color: var(--text-default);
+  }
+
+  .fp-tenant__action-btn--reject:hover {
+    background: var(--bg-secondary);
+    border-color: var(--border-default);
+  }
+
+  .fp-tenant__action-btn--accept {
+    background: var(--bg-brand);
+    color: #ffffff;
+    border-color: transparent;
+  }
+
+  .fp-tenant__action-btn--accept:hover {
+    filter: brightness(1.1);
+  }
+
+  .fp-tenant__fica-compliant {
+    display: flex;
+    align-items: center;
+    gap: clamp(3px, 0.7cqi, 6px);
+    font-size: clamp(0.75rem, 1.3cqi, 0.75rem);
+    font-weight: var(--weight-regular);
+    color: var(--text-default);
+  }
+
+  .fp-tenant__fica-check {
+    color: var(--text-positive);
+    width: clamp(16px, 2.8cqi, 20px);
+    height: clamp(16px, 2.8cqi, 20px);
+    flex-shrink: 0;
+  }
+
+  .fp-tenant__docs-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.5cqi, 12px);
+  }
+
+  .fp-tenant__doc-item {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1.2cqi, 10px);
+  }
+
+  .fp-tenant__doc-thumb {
+    width: clamp(32px, 7cqi, 48px);
+    height: clamp(32px, 7cqi, 48px);
+    border-radius: var(--radius-200);
+    border: var(--stroke-border) solid var(--border-default);
+    object-fit: cover;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .fp-tenant__doc-label {
+    font-size: clamp(0.75rem, 1.3cqi, 0.75rem);
+    font-weight: var(--weight-regular);
+    color: var(--text-default);
+    line-height: var(--leading-tight);
+  }
+
+  @media (max-width: 1024px) {
+    .fp-preview.fp-preview--tenant {
+      border: var(--stroke-border) solid var(--border-default);
+      box-shadow: var(--shadow-md);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .fp-tenant__body {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+  }
+</style>
+
+<script>
+  function createFloatingCallout(targetBtn) {
+    const callout = document.createElement('div');
+    callout.className = 'fp-callout-float';
+    callout.innerHTML = `
+      <span class="fp-callout-float__text">Try it yourself!</span>
+      <svg class="fp-callout-float__arrow" width="40" height="36" viewBox="0 0 40 36" fill="none">
+        <path d="M20 0c-2 6-5 14-4 24" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M12 22l4 12 5-11" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>`;
+    document.body.appendChild(callout);
+
+    function position() {
+      const rect = targetBtn.getBoundingClientRect();
+      callout.style.left = (rect.left + rect.width / 2) + 'px';
+      callout.style.top = (rect.top + window.scrollY - callout.offsetHeight - 4) + 'px';
+    }
+
+    // Show the callout — called externally after section reveal
+    callout.show = function(delay) {
+      setTimeout(() => {
+        position();
+        callout.setAttribute('data-visible', '');
+        setTimeout(() => callout.setAttribute('data-wiggle', ''), 700);
+        window.addEventListener('scroll', position, { passive: true });
+        window.addEventListener('resize', position, { passive: true });
+      }, delay || 0);
+    };
+
+    return callout;
+  }
+
+  function initMandateInteractions() {
+    const body = document.querySelector('.fp-mandate__body');
+    if (!body) return;
+
+    const sigPanel = body.querySelector('[data-signature-panel]');
+    const sigAgent = body.querySelector('[data-sig-agent]');
+    const sigLandlord = body.querySelector('[data-sig-landlord]');
+    const inkAgent = body.querySelector('[data-doc-sig-ink="agent"]');
+    const inkOwner = body.querySelector('[data-doc-sig-ink="owner"]');
+    const dateAgentEl = body.querySelector('[data-doc-sig-date="agent"]');
+    const dateOwnerEl = body.querySelector('[data-doc-sig-date="owner"]');
+
+    function formatSignDate() {
+      return new Date().toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function resetDocSignatures() {
+      inkAgent?.setAttribute('hidden', '');
+      inkOwner?.setAttribute('hidden', '');
+      if (dateAgentEl) dateAgentEl.textContent = '—';
+      if (dateOwnerEl) dateOwnerEl.textContent = '—';
+    }
+
+    const mandateDocEl = body.querySelector('.fp-mandate__doc');
+    const mandateDocInner = body.querySelector('.fp-mandate__doc-inner');
+
+    function resetMandateDocScrollPosition() {
+      if (!mandateDocEl || !mandateDocInner) return;
+      if (window.matchMedia('(max-width: 600px)').matches) {
+        mandateDocInner.style.transition = 'transform 0.35s ease';
+        mandateDocInner.style.transform = 'translateY(0)';
+      } else {
+        mandateDocInner.style.transform = '';
+        mandateDocEl.scrollTop = 0;
+      }
+    }
+
+    function scrollMandateDocToBottom() {
+      if (!mandateDocEl || !mandateDocInner) return;
+      requestAnimationFrame(() => {
+        if (window.matchMedia('(max-width: 600px)').matches) {
+          const overflow = Math.max(0, mandateDocInner.scrollHeight - mandateDocEl.clientHeight);
+          mandateDocInner.style.transition = 'transform 0.5s ease';
+          mandateDocInner.style.transform = `translateY(-${overflow}px)`;
+        } else {
+          mandateDocInner.style.transform = '';
+          mandateDocEl.scrollTo({
+            top: mandateDocEl.scrollHeight,
+            behavior: 'smooth',
+          });
+        }
+      });
+    }
+
+    function reveal() {
+      body.removeAttribute('data-loading');
+      body.removeAttribute('data-revealed');
+      void body.offsetWidth;
+      body.setAttribute('data-revealed', '');
+      requestAnimationFrame(() => {
+        setTimeout(resetMandateDocScrollPosition, 80);
+      });
+    }
+
+    function resetSignaturePanel() {
+      if (sendingEl) sendingEl.removeAttribute('data-active');
+      resetDocSignatures();
+      if (!sigPanel) return;
+      sigPanel.removeAttribute('data-visible');
+      if (sigAgent) {
+        sigAgent.textContent = 'Delivered. Awaiting signature.';
+        sigAgent.removeAttribute('data-signed');
+      }
+      if (sigLandlord) {
+        sigLandlord.textContent = 'Delivered. Awaiting signature.';
+        sigLandlord.removeAttribute('data-signed');
+      }
+    }
+
+    // Create callout early so it's ready
+    const sendBtn = body.querySelector('[data-send]');
+    let mandateCallout = null;
+    if (sendBtn) {
+      mandateCallout = createFloatingCallout(sendBtn);
+      sendBtn.addEventListener('click', () => {
+        mandateCallout.style.display = 'none';
+      }, { once: true });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            reveal();
+            // Show callout shortly after reveal completes
+            if (mandateCallout) mandateCallout.show(600);
+          }, 1000);
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(body);
+
+    const fieldRental = body.querySelector('[data-field-rental]');
+    const fieldDate = body.querySelector('[data-field-date]');
+    const fieldFee = body.querySelector('[data-field-fee]');
+    const docRental = body.querySelector('[data-doc-rental]');
+    const docDate = body.querySelector('[data-doc-date]');
+    const docFee = body.querySelector('[data-doc-fee]');
+
+    function updateDocFromFields() {
+      if (fieldRental && docRental) docRental.textContent = fieldRental.value;
+      if (fieldDate && docDate) docDate.textContent = fieldDate.value;
+      if (fieldFee && docFee) docFee.textContent = fieldFee.value + ' (excl. VAT)';
+    }
+
+    const regenBtn = body.querySelector('[data-regenerate]');
+    if (regenBtn) {
+      regenBtn.addEventListener('click', () => {
+        resetSignaturePanel();
+        body.removeAttribute('data-revealed');
+        body.setAttribute('data-loading', '');
+        setTimeout(() => {
+          updateDocFromFields();
+          reveal();
+        }, 1800);
+      });
+    }
+
+    const sendingEl = body.querySelector('[data-sending]');
+
+    if (sendBtn && sigPanel) {
+      sendBtn.addEventListener('click', () => {
+        resetSignaturePanel();
+        if (sendingEl) sendingEl.setAttribute('data-active', '');
+        scrollMandateDocToBottom();
+        setTimeout(scrollMandateDocToBottom, 1600);
+
+        setTimeout(() => {
+          if (sendingEl) sendingEl.removeAttribute('data-active');
+          sigPanel.setAttribute('data-visible', '');
+        }, 1500);
+
+        setTimeout(() => {
+          if (sigAgent) {
+            sigAgent.textContent = 'Signed ✓';
+            sigAgent.setAttribute('data-signed', '');
+          }
+          inkAgent?.removeAttribute('hidden');
+          if (dateAgentEl) dateAgentEl.textContent = formatSignDate();
+          if (window.matchMedia('(max-width: 600px)').matches) {
+            requestAnimationFrame(() => scrollMandateDocToBottom());
+          }
+        }, 4000);
+
+        setTimeout(() => {
+          if (sigLandlord) {
+            sigLandlord.textContent = 'Signed ✓';
+            sigLandlord.setAttribute('data-signed', '');
+          }
+          inkOwner?.removeAttribute('hidden');
+          if (dateOwnerEl) dateOwnerEl.textContent = formatSignDate();
+          if (window.matchMedia('(max-width: 600px)').matches) {
+            requestAnimationFrame(() => scrollMandateDocToBottom());
+          }
+        }, 5000);
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMandateInteractions);
+  } else {
+    initMandateInteractions();
+  }
+
+  function initCardAnimations() {
+    const cards = document.querySelectorAll('.feature-panel__card, .feature-panel__media');
+    if (!cards.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    cards.forEach((card) => observer.observe(card));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCardAnimations);
+  } else {
+    initCardAnimations();
+  }
+  (function initTenantLoading() {
+    const tenantBody = document.querySelector('.fp-tenant__body');
+    if (!tenantBody) return;
+
+    // Create callout early
+    const creditBtn = document.querySelector('[data-credit-btn]');
+    let tenantCallout = null;
+    if (creditBtn) {
+      tenantCallout = createFloatingCallout(creditBtn);
+      creditBtn.addEventListener('click', () => {
+        tenantCallout.style.display = 'none';
+      }, { once: true });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            tenantBody.removeAttribute('data-tenant-loading');
+            tenantBody.setAttribute('data-tenant-revealed', '');
+            // Show callout shortly after reveal
+            if (tenantCallout) tenantCallout.show(600);
+          }, 1000);
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(tenantBody);
+  })();
+
+  function initCreditCheckInteraction() {
+    const btn = document.querySelector('[data-credit-btn]');
+    const container = document.querySelector('.fp-tenant__body');
+    if (!btn || !container) return;
+
+    const card = container.querySelector('[data-credit-card]');
+    const defaultView = card.querySelector('[data-credit-default]');
+    const loading = card.querySelector('[data-credit-loading]');
+    const result = card.querySelector('[data-credit-result]');
+    const actions = container.querySelector('[data-tenant-actions]');
+    const acceptBtn = container.querySelector('[data-action-accept]');
+    const rejectBtn = container.querySelector('[data-action-reject]');
+    const confirmationOverlay = container.querySelector('[data-tenant-confirmation]');
+    const confirmationText = container.querySelector('[data-confirmation-text]');
+    const confirmationIcon = container.querySelector('[data-confirmation-icon]');
+
+    btn.addEventListener('click', () => {
+      defaultView.style.display = 'none';
+      loading.style.display = 'flex';
+
+      setTimeout(() => {
+        loading.style.display = 'none';
+        result.style.display = 'flex';
+        card.style.marginTop = '0';
+        if (actions) actions.style.display = 'flex';
+      }, 1000);
+    });
+
+    const showConfirmation = (message, isReject = false) => {
+      confirmationText.textContent = message;
+      if (isReject) {
+        confirmationIcon.classList.add('fp-tenant__confirmation-icon--reject');
+        confirmationIcon.innerHTML = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+      } else {
+        confirmationIcon.classList.remove('fp-tenant__confirmation-icon--reject');
+        confirmationIcon.innerHTML = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+      }
+      
+      confirmationOverlay.style.display = 'flex';
+      
+      setTimeout(() => {
+        // Hide confirmation
+        confirmationOverlay.style.display = 'none';
+        
+        // Simulate a reload of the block by fading it out
+        container.style.transition = 'none';
+        container.style.opacity = '0';
+        
+        // Reset state instantly while invisible
+        defaultView.style.display = 'flex';
+        result.style.display = 'none';
+        actions.style.display = 'none';
+        card.style.marginTop = 'auto';
+        
+        // Fade back in quickly
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            container.style.transition = 'opacity 0.4s ease';
+            container.style.opacity = '1';
+          }, 50);
+        });
+      }, 2000);
+    };
+
+    acceptBtn?.addEventListener('click', () => showConfirmation('Tenant accepted'));
+    rejectBtn?.addEventListener('click', () => showConfirmation('Tenant rejected', true));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCreditCheckInteraction);
+  } else {
+    initCreditCheckInteraction();
+  }
+</script>
