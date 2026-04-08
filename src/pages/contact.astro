@@ -22,6 +22,15 @@ const footerLinks = {
     },
   ],
 };
+
+const status = Astro.url.searchParams.get("status");
+
+/** Formspree form id from dashboard (Integrations → Form endpoint). */
+const formspreeId = import.meta.env.PUBLIC_FORMSPREE_FORM_ID ?? "";
+/** Production site origin for post-submit redirect (no trailing slash). Set in Cloudflare build env. */
+const siteBase = (import.meta.env.PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
+const formspreeAction = formspreeId ? `https://formspree.io/f/${formspreeId}` : "";
+const nextUrl = siteBase ? `${siteBase}/contact?status=success` : "";
 ---
 
 <BaseLayout title="Contact Us — Talozen" description="Get in touch with the Talozen team.">
@@ -80,11 +89,34 @@ const footerLinks = {
       <!-- Right: contact form -->
       <div class="contact-page__form-wrap">
         <h2 class="contact-form__heading">Send us a message</h2>
-        <form class="contact-form" name="contact" netlify data-netlify="true" netlify-honeypot="bot-field">
-          <input type="hidden" name="form-name" value="contact" />
-          <p class="contact-form__honeypot" aria-hidden="true">
-            <label>Don't fill this out: <input name="bot-field" /></label>
+        {status === "success" && (
+          <p class="contact-form__feedback contact-form__feedback--success" role="status">
+            Thanks, your message has been sent. Our team will get back to you soon.
           </p>
+        )}
+        {status === "error" && (
+          <p class="contact-form__feedback contact-form__feedback--error" role="alert">
+            We could not send your message. Please try again in a minute.
+          </p>
+        )}
+        {!formspreeId && (
+          <p class="contact-form__feedback contact-form__feedback--error" role="alert">
+            Contact form is not configured. Set <code>PUBLIC_FORMSPREE_FORM_ID</code> in your build environment (see Formspree form settings).
+          </p>
+        )}
+        {formspreeId && (
+        <form class="contact-form" name="contact" method="POST" action={formspreeAction}>
+          {nextUrl && <input type="hidden" name="_next" value={nextUrl} />}
+          <input type="hidden" name="_subject" value="Talozen website contact form" />
+          <input
+            type="text"
+            name="_gotcha"
+            tabindex="-1"
+            autocomplete="off"
+            class="contact-form__honeypot"
+            aria-hidden="true"
+          />
+
 
           <div class="contact-form__row">
             <div class="contact-form__field">
@@ -131,6 +163,7 @@ const footerLinks = {
 
           <button type="submit" class="tz-btn tz-btn--primary contact-form__submit">Send message</button>
         </form>
+        )}
       </div>
 
     </div>
@@ -273,6 +306,35 @@ const footerLinks = {
     display: flex;
     flex-direction: column;
     gap: var(--space-600);
+  }
+
+  .contact-form__feedback {
+    margin: 0 0 var(--space-500);
+    border-radius: var(--radius-200);
+    padding: var(--space-300) var(--space-400);
+    font-family: var(--font-sans);
+    font-size: var(--size-02);
+    line-height: var(--leading-normal);
+    border: var(--stroke-border) solid transparent;
+  }
+
+  .contact-form__feedback--success {
+    background: var(--bg-positive-tertiary);
+    color: var(--text-positive);
+    border-color: var(--border-positive, rgba(22, 163, 74, 0.35));
+  }
+
+  .contact-form__feedback--error {
+    background: var(--bg-warning-tertiary);
+    color: var(--text-warning);
+    border-color: var(--border-warning, rgba(245, 158, 11, 0.35));
+  }
+
+  .contact-form__feedback code {
+    font-size: 0.95em;
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius-100);
+    background: rgba(0, 0, 0, 0.06);
   }
 
   .contact-form__honeypot {
