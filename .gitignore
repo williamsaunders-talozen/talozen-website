@@ -28,3 +28,9 @@ skills-lock.json
 # Netlify (not deploying via Netlify)
 .netlify/
 node_modules
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
